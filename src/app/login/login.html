@@ -1,50 +1,47 @@
-<div class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
-  <div class="card shadow-lg p-4" style="width: 100%; max-width: 400px;">
-    <h2 class="text-center mb-4">Giriş Yap</h2>
+<div class="vaporwave-container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="vaporwave-card p-5">
+    
+    <div class="glitch-wrapper mb-4">
+      <h2 class="text-center neon-text" data-text="SİSTEME GİRİŞ">SİSTEME GİRİŞ</h2>
+    </div>
+
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <div class="mb-3">
-        <label for="username" class="form-label">E-posta</label>
+      <div class="mb-4">
+        <label for="username" class="form-label retro-label">E-Posta Bağlantısı</label>
         <input 
           type="email" 
-          class="form-control" 
+          class="form-control retro-input" 
           id="username" 
           formControlName="username"
-          placeholder="E-posta adresiniz"
+          placeholder="kullanici@ağ.com"
           required>
-        <div class="invalid-feedback" *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
-          Geçerli bir e-posta girin
+        <div class="invalid-feedback neon-error" *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+          [HATA] Geçerli bir ağ adresi tespit edilemedi.
         </div>
       </div>
       
-      <div class="mb-3">
-        <label for="password" class="form-label">Şifre</label>
+      <div class="mb-4">
+        <label for="password" class="form-label retro-label">Güvenlik Anahtarı</label>
         <input 
           type="password" 
-          class="form-control" 
+          class="form-control retro-input" 
           id="password" 
           formControlName="password"
-          placeholder="Şifreniz"
+          placeholder="••••••••"
           required>
-        <div class="invalid-feedback" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
-          Şifre girmek zorunludur
+        <div class="invalid-feedback neon-error" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+          [HATA] Şifre protokolü boş bırakılamaz.
         </div>
       </div>
       
-      <button type="submit" class="btn btn-primary w-100 mb-3" [disabled]="loginForm.invalid">
-        Giriş Yap
+      <button type="submit" class="btn vapor-btn w-100 mb-4" [disabled]="loginForm.invalid">
+        OTURUMU BAŞLAT
       </button>
     </form>
     
-    <hr>
-    
-    <div class="text-center">
-      <p class="mb-0">Hesabınız yok mu? <a routerLink="/register" class="text-decoration-none">Kaydol</a></p>
+    <div class="text-center retro-footer">
+      <p class="mb-0">Veritabanında kaydın yok mu? <a routerLink="/register" class="neon-link">Ağa Katıl</a></p>
     </div>
+
   </div>
 </div>
-
-<style>
-  .min-vh-100 {
-    min-height: 100vh;
-  }
-</style>

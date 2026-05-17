@@ -1,122 +1,98 @@
-<div class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
-  <div class="card shadow-lg p-4" style="width: 100%; max-width: 450px;">
-    <h2 class="text-center mb-4">Kayıt Ol</h2>
+<div class="vaporwave-container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="vaporwave-card p-4 p-md-5">
+
+    <div class="glitch-wrapper mb-4">
+      <h2 class="text-center neon-text" data-text="AĞA KAYIT">AĞA KAYIT</h2>
+    </div>
 
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
-      <!-- Ad -->
       <div class="mb-3">
-        <label for="name" class="form-label">Ad</label>
+        <label for="name" class="form-label retro-label">Birim Adı</label>
         <input 
           type="text" 
-          class="form-control"
+          class="form-control retro-input"
           id="name"
           formControlName="name"
-          placeholder="Adınız">
-        <div class="invalid-feedback"
+          placeholder="Sisteme kayıtlanacak ad">
+        <div class="invalid-feedback neon-error"
              *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
-          Ad en az 2 karakter olmalıdır
+          [HATA] Ad verisi en az 2 karakter olmalıdır.
         </div>
       </div>
 
-      <!-- Soyad -->
       <div class="mb-3">
-        <label for="surname" class="form-label">Soyad</label>
+        <label for="surname" class="form-label retro-label">Birim Soyadı</label>
         <input 
           type="text" 
-          class="form-control"
+          class="form-control retro-input"
           id="surname"
           formControlName="surname"
-          placeholder="Soyadınız">
-        <div class="invalid-feedback"
+          placeholder="Sisteme kayıtlanacak soyad">
+        <div class="invalid-feedback neon-error"
              *ngIf="registerForm.get('surname')?.invalid && registerForm.get('surname')?.touched">
-          Soyad en az 2 karakter olmalıdır
+          [HATA] Soyad verisi en az 2 karakter olmalıdır.
         </div>
       </div>
 
-      <!-- Email -->
       <div class="mb-3">
-        <label for="email" class="form-label">E-posta</label>
+        <label for="email" class="form-label retro-label">E-Posta Bağlantısı</label>
         <input 
           type="email" 
-          class="form-control"
+          class="form-control retro-input"
           id="email"
           formControlName="email"
-          placeholder="E-posta adresiniz">
-        <div class="invalid-feedback"
+          placeholder="kullanici@ağ.com">
+        <div class="invalid-feedback neon-error"
              *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
-          Geçerli bir e-posta girin
+          [HATA] Geçerli bir ağ adresi tespit edilemedi.
         </div>
       </div>
 
-      <!-- Telefon -->
       <div class="mb-3">
-        <label for="phone" class="form-label">Telefon</label>
+        <label for="phone" class="form-label retro-label">İletişim Frekansı</label>
         <input 
           type="text" 
-          class="form-control"
+          class="form-control retro-input"
           id="phone"
           maxlength="10"
           pattern="[0-9]{10}"
           minlength="10"
           formControlName="phone"
-          placeholder="Telefon numaranız">
-        <div class="invalid-feedback"
+          placeholder="5551234567">
+        <div class="invalid-feedback neon-error"
              *ngIf="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched">
-          Telefon numarası zorunludur
+          [HATA] 10 haneli iletişim frekansı zorunludur.
         </div>
       </div>
 
-      <!-- Şifre -->
-      <div class="mb-3">
-        <label for="password" class="form-label">Şifre</label>
+      <div class="mb-4">
+        <label for="password" class="form-label retro-label">Güvenlik Anahtarı</label>
         <input 
           type="password" 
-          class="form-control"
+          class="form-control retro-input"
           id="password"
           formControlName="password"
-          placeholder="Şifreniz">
-        <div class="invalid-feedback"
+          placeholder="••••••••">
+        <div class="invalid-feedback neon-error"
              *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
-          Şifre en az 6 karakter olmalıdır
+          [HATA] Güvenlik anahtarı en az 6 karakter olmalıdır.
         </div>
       </div>
 
-      <!-- Submit -->
       <button type="submit"
-              class="btn btn-primary w-100 mb-3"
+              class="btn vapor-btn w-100 mb-4"
               [disabled]="registerForm.invalid">
-        Kayıt Ol
+        SİSTEME KAYDOL
       </button>
 
     </form>
 
-    <hr>
-
-    <!-- Login link -->
-    <div class="text-center">
+    <div class="text-center retro-footer">
       <p class="mb-0">
-        Zaten hesabınız var mı?
-        <a routerLink="/" class="text-decoration-none">Giriş Yap</a>
+        Zaten veritabanında kaydın var mı?
+        <a routerLink="" class="neon-link">Oturum Aç</a>
       </p>
     </div>
   </div>
 </div>
-
-<style>
-  .min-vh-100 {
-    min-height: 100vh;
-  }
-
-  input.ng-invalid.ng-touched {
-    border-color: #dc3545;
-  }
-
-  input.ng-valid.ng-touched {
-    border-color: #198754;
-  }
-
-  .invalid-feedback {
-    display: block;
-  }
-</style>
