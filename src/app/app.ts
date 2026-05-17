@@ -1,12 +1,13 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router'; // <-- BU İMPORTUN OLDUĞUNDAN EMİN OL
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [RouterOutlet], // <-- BİLEŞENİN ROUTEROUTLET'İ TANIMASI İÇİN BURAYA EKLENMELİ
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrls: ['./app.css']
 })
 export class App {
-  protected readonly title = signal('etkinlik-uygulamasi-frontend');
+  title = 'frontend';
 }
