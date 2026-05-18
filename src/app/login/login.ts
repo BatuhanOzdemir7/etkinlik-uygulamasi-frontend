@@ -1,20 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
-  standalone: true,
   selector: 'app-login',
+  standalone: true,
   imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './login.html',
-  styleUrls: ['./login.css'],
+  styleUrls: ['./login.css']
 })
 export class Login {
+  private http = inject(HttpClient); 
   loginForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder) {
     this.loginForm = this.formBuilder.group({
+      // HTML'de 'username' demiştik, e-posta adresi için kullanıyoruz.
       username: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
@@ -22,13 +25,26 @@ export class Login {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      console.log(this.loginForm.value);
-      // Burada login işlemi yapılacak
+      const loginData = this.loginForm.value;
+      
+      // Spring Boot Backend'ine doğrudan istek atıyoruz (Hocanın yöntemi)
+      this.http.post('http://localhost:8090/user/login', loginData, { withCredentials: true }).subscribe({
+        next: (response) => {
+           // Gelen yanıtı any olarak yakalayıp parçalıyoruz
+           const { id, name, surname, email } = response as any;
+           
+           // Tarayıcı hafızasına kayıt
+           localStorage.setItem('userId', id);
+           localStorage.setItem('name', name + ' ' + surname);
+           localStorage.setItem('email', email);
+           
+           // Angular Router yerine doğrudan pencere yönlendirmesi
+           window.location.href = '/'; 
+        },
+        error: (error) => {
+          alert('Sisteme giriş başarısız: ' + (error.error?.message || 'Bağlantı hatası'));
+        }
+      });
     }
   }
-
-
-
-
-
 }

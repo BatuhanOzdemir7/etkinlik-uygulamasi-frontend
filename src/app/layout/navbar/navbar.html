@@ -1,0 +1,27 @@
+<nav class="navbar navbar-expand-lg vapor-nav px-4">
+  <div class="container-fluid">
+    <a class="navbar-brand neon-brand-text" routerLink="/events" data-text="ETKİNLİK // AĞI">ETKİNLİK // AĞI</a>
+    
+    <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link retro-nav-link" routerLink="/events" routerLinkActive="active-link">Ağdaki Etkinlikler</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link retro-nav-link" routerLink="/create-event" routerLinkActive="active-link">Etkinlik Oluştur</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link retro-nav-link" routerLink="/my-events" routerLinkActive="active-link">Panellerim</a>
+        </li>
+      </ul>
+      
+      <div class="d-flex">
+        <button class="btn logout-btn" (click)="logout()">OTURUMU KAPAT</button>
+      </div>
+    </div>
+  </div>
+</nav>

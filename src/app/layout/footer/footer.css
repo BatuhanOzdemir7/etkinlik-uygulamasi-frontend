@@ -1,0 +1,13 @@
+.footer-neon-text {
+  color: #ff007f;
+  text-shadow: 0 0 5px #ff007f;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+}
+
+.cyber-subtext {
+  color: #00ffff;
+  text-shadow: 0 0 3px #00ffff;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+}
