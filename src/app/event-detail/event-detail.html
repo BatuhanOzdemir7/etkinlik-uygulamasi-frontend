@@ -47,6 +47,29 @@
         }
     </div>
     </div>
+
+    <div class="host-panel mt-4 p-4 border border-danger mb-4">
+        <h5 class="cyber-title text-danger mb-3">>> HOST KONTROL PROTOKOLLERİ</h5>
+        <div class="d-flex gap-3 flex-wrap">
+          
+          @if (event()!.status !== 'PUBLISHED') {
+            <button class="btn host-btn-publish flex-grow-1" (click)="changeEventStatus('PUBLISHED')">
+              SİSTEMDE YAYINLA
+            </button>
+          }
+          
+          @if (event()!.status === 'PUBLISHED') {
+            <button class="btn host-btn-archive flex-grow-1" (click)="changeEventStatus('ARCHIVED')">
+              YAYINI DURDUR / ARŞİVLE
+            </button>
+          }
+          
+          <button class="btn host-btn-delete flex-grow-1" (click)="deleteEvent()">
+            KALICI OLARAK SİL
+          </button>
+          
+        </div>
+      </div>
       
       <p class="description mb-4">{{ event()!.description }}</p>
 

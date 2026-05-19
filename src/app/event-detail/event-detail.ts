@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { EventService, IEvent, IUser } from '../services/event.service';
 import { HttpClient } from '@angular/common/http';
 
@@ -13,6 +13,7 @@ import { HttpClient } from '@angular/common/http';
 export class EventDetail implements OnInit {
 
   private route        = inject(ActivatedRoute);
+  private router       = inject(Router);
   private eventService = inject(EventService);
   private http         = inject(HttpClient); // Eksik olan HttpClient bağımlılığı eklendi
 
@@ -117,4 +118,43 @@ export class EventDetail implements OnInit {
     });
   }
   
+
+changeEventStatus(newStatus: string): void {
+    const id = this.eventId;
+    if (!id) return;
+
+    // Frontend'deki butonlardan gelen stringleri Backend Enum değerlerine göre eşle:
+    // "PUBLISHED" yerine "YAYINDA", "ARCHIVED" yerine "ARSIVLENDI" gönderiyoruz.
+    let backendStatus = newStatus;
+    if (newStatus === 'PUBLISHED') backendStatus = 'YAYINDA';
+    if (newStatus === 'ARCHIVED') backendStatus = 'ARSIVLENDI';
+
+    this.http.put(`http://localhost:8090/event/change-status/${id}?status=${backendStatus}`, {}, { withCredentials: true }).subscribe({
+      next: () => {
+        alert('Etkinlik durumu başarıyla güncellendi.');
+        this.loadDetail();
+      },
+      error: (err: any) => {
+        alert(err.error?.message || 'Hata oluştu.');
+      }
+    });
+}
+
+  deleteEvent(): void {
+    const id = this.eventId; // Parantezler kaldırıldı
+    if (!id) return;
+
+    if (!confirm('UYARI: Bu etkinliği sistem ağından tamamen silmek istediğinize emin misiniz? Bu işlem geri alınamaz.')) return;
+
+    this.http.delete(`http://localhost:8090/event/deleteOne/${id}`, { withCredentials: true }).subscribe({
+      next: () => {
+        alert('Etkinlik sistemden kalıcı olarak silindi.');
+        this.router.navigate(['/my-drafts']); 
+      },
+      error: (err: any) => {
+        console.error('Silme hatası', err);
+        alert(err.error?.message || 'Yetkisiz işlem veya sistem hatası.');
+      }
+    });
+  }
 }

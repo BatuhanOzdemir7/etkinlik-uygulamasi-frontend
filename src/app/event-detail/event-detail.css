@@ -219,3 +219,50 @@
   from { opacity: 0; transform: translateX(-50%) translateY(12px); }
   to   { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
+
+.host-panel {
+  background: rgba(50, 0, 0, 0.4);
+  box-shadow: inset 0 0 15px rgba(255, 0, 0, 0.2);
+}
+
+.host-btn-publish {
+  background: transparent;
+  color: #00ff66;
+  border: 1px solid #00ff66;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+}
+
+.host-btn-publish:hover {
+  background: #00ff66;
+  color: #000;
+  box-shadow: 0 0 15px rgba(0, 255, 102, 0.6);
+}
+
+.host-btn-archive {
+  background: transparent;
+  color: #ffaa00;
+  border: 1px solid #ffaa00;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+}
+
+.host-btn-archive:hover {
+  background: #ffaa00;
+  color: #000;
+  box-shadow: 0 0 15px rgba(255, 170, 0, 0.6);
+}
+
+.host-btn-delete {
+  background: transparent;
+  color: #ff003c;
+  border: 1px solid #ff003c;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+}
+
+.host-btn-delete:hover {
+  background: #ff003c;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(255, 0, 60, 0.8);
+}
