@@ -123,15 +123,10 @@ changeEventStatus(newStatus: string): void {
     const id = this.eventId;
     if (!id) return;
 
-    // Frontend'deki butonlardan gelen stringleri Backend Enum değerlerine göre eşle:
-    // "PUBLISHED" yerine "YAYINDA", "ARCHIVED" yerine "ARSIVLENDI" gönderiyoruz.
-    let backendStatus = newStatus;
-    if (newStatus === 'PUBLISHED') backendStatus = 'YAYINDA';
-    if (newStatus === 'ARCHIVED') backendStatus = 'ARSIVLENDI';
-
-    this.http.put(`http://localhost:8090/event/change-status/${id}?status=${backendStatus}`, {}, { withCredentials: true }).subscribe({
+    // Artık mapping (eşleştirme) yapmıyoruz, doğrudan İngilizce değer gönderiyoruz!
+    this.http.put(`http://localhost:8090/event/change-status/${id}?status=${newStatus}`, {}, { withCredentials: true }).subscribe({
       next: () => {
-        alert('Etkinlik durumu başarıyla güncellendi.');
+        alert('Etkinlik durumu güncellendi.');
         this.loadDetail();
       },
       error: (err: any) => {
