@@ -1,13 +1,6 @@
-/* Mevcut projeden miras alınan temel stiller burada tekrarlanmaz.
-   Sadece bu sayfaya özgü stiller tanımlanır. */
-
 .terminal-container {
   min-height: 85vh;
 }
-
-/* vapor-card, neon-title, matrix-label, matrix-value, neon-divider,
-   description, capacity-badge, cyber-btn, cyber-title — events.css'den
-   global styles.css'e taşınması önerilir. Taşınana kadar buraya kopyalanmıştır. */
 
 .vapor-card {
   background: rgba(9, 2, 20, 0.95);
@@ -68,6 +61,7 @@
   border-radius: 4px;
 }
 
+/* Kayıt ol butonu */
 .cyber-btn {
   background: transparent;
   color: #00ffff;
@@ -76,15 +70,40 @@
   letter-spacing: 1px;
   padding: 6px 16px;
   transition: all 0.3s ease;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.85rem;
 }
-
-.cyber-btn:hover {
+.cyber-btn:hover:not(:disabled) {
   background: #00ffff;
   color: #000;
   box-shadow: 0 0 15px #00ffff;
 }
+.cyber-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
 
-/* ── Bu sayfaya özgü stiller ── */
+/* Kaydı iptal et butonu */
+.cyber-btn-danger {
+  background: transparent;
+  color: #ff4444;
+  border: 1px solid #ff4444;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 6px 16px;
+  transition: all 0.3s ease;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.85rem;
+}
+.cyber-btn-danger:hover:not(:disabled) {
+  background: #ff4444;
+  color: #000;
+  box-shadow: 0 0 15px #ff4444;
+}
+.cyber-btn-danger:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
 
 .btn-back {
   color: #00ffff;
@@ -94,7 +113,6 @@
   text-decoration: none;
   transition: color 0.2s, text-shadow 0.2s;
 }
-
 .btn-back:hover {
   color: #ff007f;
   text-shadow: 0 0 8px #ff007f;
@@ -111,7 +129,6 @@
   letter-spacing: 1px;
 }
 
-/* Host kartı */
 .host-card {
   background: rgba(255, 0, 127, 0.05);
   border: 1px solid rgba(255, 0, 127, 0.25);
@@ -125,7 +142,6 @@
   font-size: 0.8rem;
 }
 
-/* Avatar dairesi */
 .avatar-circle {
   width: 48px;
   height: 48px;
@@ -148,7 +164,6 @@
   font-size: 0.8rem;
 }
 
-/* Katılımcı listesi */
 .participants-list {
   list-style: none;
   padding: 0;
@@ -168,8 +183,39 @@
   border-radius: 4px;
   transition: border-color 0.2s, background 0.2s;
 }
-
 .participant-item:hover {
   background: rgba(0, 255, 255, 0.08);
   border-color: rgba(0, 255, 255, 0.3);
+}
+
+/* ── Toast bildirimi ── */
+.toast-bar {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.75rem 2rem;
+  border-radius: 4px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  z-index: 9999;
+  animation: fadeInUp 0.3s ease;
+  white-space: nowrap;
+}
+.toast-success {
+  background: rgba(0, 255, 0, 0.1);
+  border: 1px solid #00ff00;
+  color: #00ff00;
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+}
+.toast-error {
+  background: rgba(255, 68, 68, 0.1);
+  border: 1px solid #ff4444;
+  color: #ff4444;
+  box-shadow: 0 0 15px rgba(255, 68, 68, 0.3);
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
 }

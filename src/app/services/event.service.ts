@@ -2,7 +2,6 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 
-// Backend'den gelen Page nesnesini karşılayacak arayüz
 export interface IPageResponse<T> {
   content: T[];
   totalElements: number;
@@ -10,7 +9,6 @@ export interface IPageResponse<T> {
   number: number;
 }
 
-// Backend'den dönen kullanıcı nesnesi
 export interface IUser {
   id: number;
   name: string;
@@ -20,7 +18,6 @@ export interface IUser {
   enabled: boolean;
 }
 
-// Event.java nesnesinin Angular tarafındaki karşılığı
 export interface IEvent {
   id: number;
   title: string;
@@ -34,20 +31,22 @@ export interface IEvent {
   status: string;
 }
 
-// /event/detail/{id} endpoint'inin döndürdüğü wrapper
 export interface IEventDetailResponse {
   event: IEvent;
   success: boolean;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+export interface IActionResponse {
+  success: boolean;
+  message: string;
+}
+
+@Injectable({ providedIn: 'root' })
 export class EventService {
+
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:8090/event';
 
-  // Sayfalanmış etkinlik listesini çeker
   getEvents(page: number = 0): Observable<IPageResponse<IEvent>> {
     return this.http.get<IPageResponse<IEvent>>(
       `${this.apiUrl}/list?page=${page}`,
@@ -55,7 +54,8 @@ export class EventService {
     );
   }
 
-  // Tek etkinliğin detayını çeker; wrapper'dan IEvent'i ayıklayarak döner
+  // Detay endpoint'inden wrapper'ı soyarak doğrudan IEvent döndürür.
+  // participants dizisi bu response'un içinde dolu gelir — ayrı endpoint'e gerek yok.
   getEventDetail(id: number): Observable<IEvent> {
     return this.http.get<IEventDetailResponse>(
       `${this.apiUrl}/detail/${id}`,
@@ -65,19 +65,19 @@ export class EventService {
     );
   }
 
-  // Etkinliğe katılan kullanıcıların listesini çeker
-  getParticipants(id: number): Observable<IUser[]> {
-    return this.http.get<IUser[]>(
-      `${this.apiUrl}/${id}/participants`,
+  // POST /event/join/{id}
+  joinEvent(id: number): Observable<IActionResponse> {
+    return this.http.post<IActionResponse>(
+      `${this.apiUrl}/join/${id}`,
+      {},
       { withCredentials: true }
     );
   }
 
-  // Kullanıcıyı etkinliğe kaydeder
-  joinEvent(id: number): Observable<any> {
-    return this.http.post(
-      `${this.apiUrl}/join/${id}`,
-      {},
+  // DELETE /event/leave/{id}
+  leaveEvent(id: number): Observable<IActionResponse> {
+    return this.http.delete<IActionResponse>(
+      `${this.apiUrl}/leave/${id}`,
       { withCredentials: true }
     );
   }

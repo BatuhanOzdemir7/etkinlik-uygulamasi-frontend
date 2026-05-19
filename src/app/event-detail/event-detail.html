@@ -1,5 +1,12 @@
 <div class="terminal-container container py-5">
 
+  <!-- Toast bildirimi -->
+  @if (toast()) {
+    <div class="toast-bar" [class.toast-success]="toast()!.type === 'success'" [class.toast-error]="toast()!.type === 'error'">
+      {{ toast()!.message }}
+    </div>
+  }
+
   @if (isLoading()) {
     <div class="text-center mt-5">
       <p class="matrix-label fs-5">// VERİ AKIŞI BEKLENİYOR...</p>
@@ -15,22 +22,39 @@
 
   @if (!isLoading() && !error() && event()) {
 
-    <!-- Geri butonu -->
     <a routerLink="/events" class="btn-back d-inline-block mb-4">← AĞA DÖN</a>
 
     <!-- Ana Detay Kartı -->
     <div class="vapor-card p-4 mb-4">
 
-      <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+      <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
         <h2 class="cyber-title mb-0">{{ event()!.title }}</h2>
-        <span class="status-badge">{{ event()!.status }}</span>
+        <div class="d-flex align-items-center gap-2">
+          <span class="status-badge">{{ event()!.status }}</span>
+
+          <!-- Reaktif Kayıt Butonu -->
+          @if (isRegistered()) {
+            <button
+              class="btn cyber-btn-danger"
+              [disabled]="isActing()"
+              (click)="leave()">
+              {{ isActing() ? '...' : 'KAYDI İPTAL ET' }}
+            </button>
+          } @else {
+            <button
+              class="btn cyber-btn"
+              [disabled]="isActing()"
+              (click)="join()">
+              {{ isActing() ? '...' : 'KAYIT OL' }}
+            </button>
+          }
+        </div>
       </div>
 
       <p class="description mb-4">{{ event()!.description }}</p>
 
       <hr class="neon-divider mb-4">
 
-      <!-- Meta bilgiler -->
       <div class="row g-3 mb-4">
         <div class="col-sm-6">
           <div class="d-flex align-items-center">
@@ -76,9 +100,7 @@
     <div class="vapor-card p-4">
 
       <div class="d-flex align-items-center gap-3 mb-4">
-        <h4 class="neon-title mb-0" style="font-size: 1.1rem; letter-spacing: 2px;">
-          KATILIMCILAR
-        </h4>
+        <h4 class="neon-title mb-0" style="font-size: 1.1rem; letter-spacing: 2px;">KATILIMCILAR</h4>
         <span class="capacity-badge">{{ participants().length }} KAYIT</span>
       </div>
 
