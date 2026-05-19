@@ -10,7 +10,6 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(), 
     
     provideRouter(routes), 
-    provideClientHydration(),
     provideHttpClient(withFetch())
   ]
 };

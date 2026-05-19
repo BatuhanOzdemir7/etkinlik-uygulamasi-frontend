@@ -2,7 +2,7 @@
   <h2 class="neon-title text-center mb-5">SİSTEM AĞI // AKTİF ETKİNLİKLER</h2>
   
   <div class="row align-items-stretch">
-    @for (event of eventList; track event.id) {
+    @for (event of eventList(); track event.id) {
       <div class="col-md-4 mb-4">
         
         <div class="vapor-card h-100 d-flex flex-column">
@@ -11,11 +11,11 @@
             
             <div class="d-flex align-items-center mb-2">
               <span class="matrix-label me-2">Tarih:</span>
-              <span class="matrix-value">{{ event.date }}</span>
+              <span class="matrix-value">{{ event.eventDate }}</span>
             </div>
             <div class="d-flex align-items-center mb-2">
               <span class="matrix-label me-2">Saat:</span>
-              <span class="matrix-value">{{ event.time }}</span>
+              <span class="matrix-value">{{ event.eventTime }}</span>
             </div>
             <div class="d-flex align-items-center mb-2">
               <span class="matrix-label me-2">Konum:</span>
@@ -23,7 +23,7 @@
             </div>
             <div class="d-flex align-items-center mb-3">
               <span class="matrix-label me-2">Host:</span>
-              <span class="matrix-value">{{ event.host }}</span>
+              <span class="matrix-value">{{ event.owner?.name || 'Sistem Admin' }}</span>
             </div>
             
             <hr class="neon-divider">
@@ -31,8 +31,8 @@
             <p class="card-text description flex-grow-1 mt-2 mb-4">{{ event.description }}</p>
             
             <div class="d-flex justify-content-between align-items-center mt-auto">
-              <span class="capacity-badge">Kapasite: {{ event.capacity }}</span>
-              <button class="btn cyber-btn">KAYIT OL</button>
+              <span class="capacity-badge">Katılımcılar: {{ event.participants ? event.participants.length : 0 }}</span>
+              <button class="btn cyber-btn" (click)="registerToEvent(event.id)">KAYIT OL</button>
             </div>
           </div>
         </div>
