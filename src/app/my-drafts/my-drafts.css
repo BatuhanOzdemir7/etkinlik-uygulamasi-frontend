@@ -1,0 +1,75 @@
+.vapor-card {
+  background: rgba(20, 20, 35, 0.85);
+  border: 2px solid #ff007f;
+  box-shadow: 0 0 15px rgba(255, 0, 127, 0.3);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.vapor-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 25px rgba(255, 0, 127, 0.6);
+  border-color: #00ff66;
+}
+
+.neon-title {
+  color: #00ff66;
+  text-shadow: 0 0 10px rgba(0, 255, 102, 0.7);
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 3px;
+}
+
+.cyber-title {
+  color: #ff007f;
+  text-shadow: 0 0 8px rgba(255, 0, 127, 0.5);
+  font-weight: bold;
+}
+
+.matrix-label {
+  color: #00ff66;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.matrix-value {
+  color: #ffffff;
+}
+
+.neon-divider {
+  border-top: 2px solid #00ffff;
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+  opacity: 1;
+}
+
+.cyber-btn {
+  background: transparent;
+  color: #00ffff;
+  border: 1px solid #00ffff;
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
+  font-weight: bold;
+}
+
+.cyber-btn:hover:not(:disabled) {
+  background: #00ffff;
+  color: #000000;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+}
+
+.cyber-btn:disabled {
+  border-color: #555555;
+  color: #555555;
+  cursor: not-allowed;
+}
+
+.status-badge {
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border-radius: 3px;
+}
+
+.description {
+  color: #e0e0ff; /* Açık buz mavisi/beyaz tonu */
+  text-shadow: 0 0 5px rgba(224, 224, 255, 0.4);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
