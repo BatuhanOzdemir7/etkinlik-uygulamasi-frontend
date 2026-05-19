@@ -5,7 +5,9 @@
     @for (event of eventList(); track event.id) {
       <div class="col-md-4 mb-4">
         
-        <div class="vapor-card h-100 d-flex flex-column">
+        <div class="vapor-card h-100 d-flex flex-column" 
+             [routerLink]="['/events', event.id]" 
+             style="cursor: pointer;">
           <div class="card-body d-flex flex-column flex-grow-1">
             <h5 class="cyber-title mb-4">{{ event.title }}</h5>
             
@@ -23,7 +25,7 @@
             </div>
             <div class="d-flex align-items-center mb-3">
               <span class="matrix-label me-2">Host:</span>
-              <span class="matrix-value">{{ event.owner?.name || 'Sistem Admin' }}</span>
+                <span class="matrix-value">{{ event.owner.name }}</span>
             </div>
             
             <hr class="neon-divider">
@@ -32,7 +34,7 @@
             
             <div class="d-flex justify-content-between align-items-center mt-auto">
               <span class="capacity-badge">Katılımcılar: {{ event.participants ? event.participants.length : 0 }}</span>
-              <button class="btn cyber-btn" (click)="registerToEvent(event.id)">KAYIT OL</button>
+              <button class="btn cyber-btn" (click)="registerToEvent(event.id); $event.stopPropagation()">KAYIT OL</button>
             </div>
           </div>
         </div>

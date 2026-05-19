@@ -1,0 +1,175 @@
+/* Mevcut projeden miras alınan temel stiller burada tekrarlanmaz.
+   Sadece bu sayfaya özgü stiller tanımlanır. */
+
+.terminal-container {
+  min-height: 85vh;
+}
+
+/* vapor-card, neon-title, matrix-label, matrix-value, neon-divider,
+   description, capacity-badge, cyber-btn, cyber-title — events.css'den
+   global styles.css'e taşınması önerilir. Taşınana kadar buraya kopyalanmıştır. */
+
+.vapor-card {
+  background: rgba(9, 2, 20, 0.95);
+  border: 1px solid #ff007f;
+  border-radius: 6px;
+  box-shadow: 0 0 15px rgba(255, 0, 127, 0.15);
+  transition: all 0.3s ease;
+}
+
+.neon-title {
+  color: #00ffff;
+  text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.cyber-title {
+  color: #ff007f;
+  font-weight: bold;
+  text-shadow: 0 0 5px #ff007f;
+  letter-spacing: 1px;
+  font-size: 1.25rem;
+}
+
+.matrix-label {
+  color: #888;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  min-width: 70px;
+}
+
+.matrix-value {
+  color: #00ff00;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.95rem;
+}
+
+.neon-divider {
+  border-top: 1px solid #00ffff;
+  box-shadow: 0 0 5px #00ffff;
+  opacity: 0.4;
+}
+
+.description {
+  color: #e0e0e0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+.capacity-badge {
+  background: rgba(255, 255, 0, 0.1);
+  color: #ffff00;
+  border: 1px dashed #ffff00;
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  font-family: 'Courier New', Courier, monospace;
+  border-radius: 4px;
+}
+
+.cyber-btn {
+  background: transparent;
+  color: #00ffff;
+  border: 1px solid #00ffff;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 6px 16px;
+  transition: all 0.3s ease;
+}
+
+.cyber-btn:hover {
+  background: #00ffff;
+  color: #000;
+  box-shadow: 0 0 15px #00ffff;
+}
+
+/* ── Bu sayfaya özgü stiller ── */
+
+.btn-back {
+  color: #00ffff;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  text-decoration: none;
+  transition: color 0.2s, text-shadow 0.2s;
+}
+
+.btn-back:hover {
+  color: #ff007f;
+  text-shadow: 0 0 8px #ff007f;
+}
+
+.status-badge {
+  background: rgba(0, 255, 0, 0.08);
+  color: #00ff00;
+  border: 1px solid #00ff00;
+  padding: 4px 14px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+/* Host kartı */
+.host-card {
+  background: rgba(255, 0, 127, 0.05);
+  border: 1px solid rgba(255, 0, 127, 0.25);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+}
+
+.host-email {
+  color: #555;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.8rem;
+}
+
+/* Avatar dairesi */
+.avatar-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff007f, #00ffff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #000;
+  flex-shrink: 0;
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 1px;
+}
+
+.avatar-sm {
+  width: 38px;
+  height: 38px;
+  font-size: 0.8rem;
+}
+
+/* Katılımcı listesi */
+.participants-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.participant-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.65rem 1rem;
+  background: rgba(0, 255, 255, 0.03);
+  border: 1px solid rgba(0, 255, 255, 0.12);
+  border-radius: 4px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.participant-item:hover {
+  background: rgba(0, 255, 255, 0.08);
+  border-color: rgba(0, 255, 255, 0.3);
+}
