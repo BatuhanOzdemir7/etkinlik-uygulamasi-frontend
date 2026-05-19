@@ -1,55 +1,106 @@
 <div class="terminal-container container py-5">
   <div class="vapor-card p-5 mx-auto" style="max-width: 800px;">
-    
+
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2 class="neon-title mb-0">SİSTEM AĞI // YENİ ETKİNLİK</h2>
-      <a routerLink="/events" class="btn cyber-btn-outline">← İPTAL</a>
+      <!-- Başlık: moda göre değişir -->
+      <h2 class="neon-title mb-0">
+        {{ isEditMode() ? 'SİSTEM AĞI // ETKİNLİK DÜZENLE' : 'SİSTEM AĞI // YENİ ETKİNLİK' }}
+      </h2>
+      <a routerLink="/my-drafts" class="btn cyber-btn-outline">← İPTAL</a>
     </div>
-    
+
     @if (error()) {
       <div class="alert alert-danger matrix-label bg-dark border-danger mb-4">
         > HATA: {{ error() }}
       </div>
     }
 
-    <form (ngSubmit)="createEvent()">
+    <form (ngSubmit)="saveEvent()">
+
       <div class="mb-4">
         <label class="matrix-label mb-2">> ETKİNLİK BAŞLIĞI</label>
-        <input type="text" class="form-control cyber-input" [ngModel]="title()" (ngModelChange)="title.set($event)" name="title" required>
+        <input
+          type="text"
+          class="form-control cyber-input"
+          [ngModel]="title()"
+          (ngModelChange)="title.set($event)"
+          name="title"
+          required>
       </div>
 
       <div class="mb-4">
         <label class="matrix-label mb-2">> AÇIKLAMA</label>
-        <textarea class="form-control cyber-input" rows="4" [ngModel]="description()" (ngModelChange)="description.set($event)" name="description" required></textarea>
+        <textarea
+          class="form-control cyber-input"
+          rows="4"
+          [ngModel]="description()"
+          (ngModelChange)="description.set($event)"
+          name="description"
+          required></textarea>
       </div>
 
       <div class="row">
         <div class="col-md-6 mb-4">
           <label class="matrix-label mb-2">> TARİH (YYYY-MM-DD)</label>
-          <input type="date" class="form-control cyber-input" [min]="todayDate" [ngModel]="eventDate()" (ngModelChange)="eventDate.set($event)" name="eventDate" required>
+          <input
+            type="date"
+            class="form-control cyber-input"
+            [min]="todayDate"
+            [ngModel]="eventDate()"
+            (ngModelChange)="eventDate.set($event)"
+            name="eventDate"
+            required>
         </div>
         <div class="col-md-6 mb-4">
           <label class="matrix-label mb-2">> SAAT (HH:MM)</label>
-          <input type="time" class="form-control cyber-input" [ngModel]="eventTime()" (ngModelChange)="eventTime.set($event)" name="eventTime" required>
+          <input
+            type="time"
+            class="form-control cyber-input"
+            [ngModel]="eventTime()"
+            (ngModelChange)="eventTime.set($event)"
+            name="eventTime"
+            required>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-6 mb-4">
           <label class="matrix-label mb-2">> KONUM</label>
-          <input type="text" class="form-control cyber-input" [ngModel]="location()" (ngModelChange)="location.set($event)" name="location" required>
+          <input
+            type="text"
+            class="form-control cyber-input"
+            [ngModel]="location()"
+            (ngModelChange)="location.set($event)"
+            name="location"
+            required>
         </div>
         <div class="col-md-6 mb-4">
           <label class="matrix-label mb-2">> KATEGORİ</label>
-          <input type="text" class="form-control cyber-input" [ngModel]="category()" (ngModelChange)="category.set($event)" name="category" required>
+          <input
+            type="text"
+            class="form-control cyber-input"
+            [ngModel]="category()"
+            (ngModelChange)="category.set($event)"
+            name="category"
+            required>
         </div>
       </div>
 
       <div class="text-end mt-4">
-        <button type="submit" class="btn cyber-btn px-5 py-2" [disabled]="isSubmitting()">
-          {{ isSubmitting() ? 'YÜKLENİYOR...' : 'AĞA YÜKLE (TASLAK OLARAK)' }}
+        <button
+          type="submit"
+          class="btn cyber-btn px-5 py-2"
+          [disabled]="isSubmitting()">
+          @if (isSubmitting()) {
+            İŞLENİYOR...
+          } @else if (isEditMode()) {
+            GÜNCELLE
+          } @else {
+            AĞA YÜKLE (TASLAK OLARAK)
+          }
         </button>
       </div>
+
     </form>
   </div>
 </div>

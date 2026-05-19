@@ -29,6 +29,10 @@
     <h2 class="cyber-title mb-0">{{ event()!.title }}</h2>
     <div class="d-flex align-items-center gap-2">
         <span class="status-badge">{{ event()!.status }}</span>
+        <!-- Ana Detay Kartı içinde, status-badge'in yanına ekle -->
+        <a [routerLink]="['/events', event()!.id, 'edit']" class="btn cyber-btn-edit">
+        DÜZENLE
+        </a>
 
         @if (isRegistered()) {
         <button
@@ -67,7 +71,6 @@
           <button class="btn host-btn-delete flex-grow-1" (click)="deleteEvent()">
             KALICI OLARAK SİL
           </button>
-          
         </div>
       </div>
       
