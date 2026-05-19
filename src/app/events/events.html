@@ -46,4 +46,26 @@
       </div>
     }
   </div>
+
+  @if (totalPages() > 1) {
+    <div class="d-flex justify-content-center align-items-center mt-5 gap-4">
+      <button 
+        class="btn cyber-btn" 
+        [disabled]="currentPage() === 0" 
+        (click)="prevPage()">
+        ← ÖNCEKİ
+      </button>
+      
+      <span class="matrix-label fs-5">
+        SAYFA {{ currentPage() + 1 }} / {{ totalPages() }}
+      </span>
+      
+      <button 
+        class="btn cyber-btn" 
+        [disabled]="currentPage() >= totalPages() - 1" 
+        (click)="nextPage()">
+        SONRAKİ →
+      </button>
+    </div>
+  }
 </div>

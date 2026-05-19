@@ -17,6 +17,7 @@ export class Events implements OnInit {
   // 1. Dizi yerine Sinyal tanımlıyoruz
   eventList = signal<IEvent[]>([]); 
   currentPage = signal<number>(0);
+  totalPages = signal<number>(0); // Toplam sayfa sayısını tutacak sinyal eklendi
 
   ngOnInit(): void {
     this.loadEvents();
@@ -29,6 +30,7 @@ export class Events implements OnInit {
         // 2. Veri geldiğinde Sinyale 'set' atıyoruz.
         // Bu işlem, Zoneless mimaride Angular'a "HTML'i hemen çiz!" emrini otomatik verir.
         this.eventList.set(response.content);
+        this.totalPages.set(response.totalPages); // Backend'den gelen toplam sayfa sayısı kaydedildi
       },
       error: (err) => {
         console.error('Etkinlik ağa bağlanırken hata oluştu:', err);
@@ -47,5 +49,21 @@ export class Events implements OnInit {
         alert('Kayıt Başarısız: ' + errorMsg);
       }
     });
+  }
+
+  // Sonraki Sayfa Metodu
+  nextPage(): void {
+    if (this.currentPage() < this.totalPages() - 1) {
+      this.currentPage.set(this.currentPage() + 1);
+      this.loadEvents();
+    }
+  }
+
+  // Önceki Sayfa Metodu
+  prevPage(): void {
+    if (this.currentPage() > 0) {
+      this.currentPage.set(this.currentPage() - 1);
+      this.loadEvents();
+    }
   }
 }
