@@ -1,29 +1,42 @@
-import { Component } from '@angular/core';
-import { RouterModule, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { Component, inject } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
-  standalone: true,
-  selector: 'app-navbar',
-  imports: [RouterModule, CommonModule],
-  templateUrl: './navbar.html',
-  styleUrls: ['./navbar.css']
+    standalone: true,
+    selector: 'app-navbar',
+    imports: [RouterModule],
+    templateUrl: './navbar.html',
+    styleUrls: ['./navbar.css']
 })
 export class Navbar {
-  constructor(private http: HttpClient, private router: Router) {}
 
-  logout() {
-    // Spring Boot tarafındaki güvenli oturum kapatma uç noktasını tetikliyoruz
-    this.http.post('http://localhost:8090/user/logout', {}, { withCredentials: true }).subscribe({
-      next: () => {
-        localStorage.clear();
-        this.router.navigate(['/']);
-      },
-      error: () => {
-        localStorage.clear();
-        this.router.navigate(['/']);
-      }
-    });
-  }
+    private http = inject(HttpClient);
+    globalName = 'Guest';
+
+    constructor() {
+        const name = localStorage.getItem('name');
+        if (name) {
+            this.globalName = name;
+        }
+    }
+
+    logout() {
+        const answer = confirm('Çıkış yapmak istediğinize emin misiniz?');
+        if (answer) {
+            this.http.post('http://localhost:8090/user/logout', {}, {
+                withCredentials: true,
+                responseType: 'text'
+            }).subscribe({
+                next: () => {
+                    localStorage.clear();
+                    window.location.href = '/';
+                },
+                error: () => {
+                    localStorage.clear();
+                    window.location.href = '/';
+                }
+            });
+        }
+    }
 }

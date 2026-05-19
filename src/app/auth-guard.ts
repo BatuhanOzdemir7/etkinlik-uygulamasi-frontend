@@ -9,15 +9,14 @@ export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const platformId = inject(PLATFORM_ID);
 
-  // Eğer kod sunucuda (Node.js) çalışıyorsa HTTP isteği atma, doğrudan izin ver.
-  // Kararı tarayıcı tarafındaki Angular motoruna bırakıyoruz.
   if (!isPlatformBrowser(platformId)) {
     return true;
   }
 
-  // Kod tarayıcıya indiğinde asıl güvenli oturum kontrolünü yap
+  // responseType: 'text' eklenerek JSON Parse hatası kesin olarak engellenir
   return http.get('http://localhost:8090/event/control', {
-    withCredentials: true
+    withCredentials: true,
+    responseType: 'text' 
   }).pipe(
     map(() => true),
     catchError(() => {
