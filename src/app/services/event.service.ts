@@ -56,14 +56,12 @@ export class EventService {
 
   // Detay endpoint'inden wrapper'ı soyarak doğrudan IEvent döndürür.
   // participants dizisi bu response'un içinde dolu gelir — ayrı endpoint'e gerek yok.
-  getEventDetail(id: number): Observable<IEvent> {
-    return this.http.get<IEventDetailResponse>(
-      `${this.apiUrl}/detail/${id}`,
-      { withCredentials: true }
-    ).pipe(
-      map(response => response.event)
-    );
-  }
+    getEventDetail(id: number): Observable<IEvent> {
+    return this.http.get<any>(
+        `${this.apiUrl}/detail/${id}`,
+        { withCredentials: true }
+    ).pipe(map(response => response.event));
+    }
 
   // POST /event/join/{id}
   joinEvent(id: number): Observable<IActionResponse> {
@@ -75,10 +73,10 @@ export class EventService {
   }
 
   // DELETE /event/leave/{id}
-  leaveEvent(id: number): Observable<IActionResponse> {
-    return this.http.delete<IActionResponse>(
-      `${this.apiUrl}/leave/${id}`,
-      { withCredentials: true }
+    leaveEvent(id: number): Observable<any> {
+    return this.http.delete(
+        `${this.apiUrl}/leave/${id}`,
+        { withCredentials: true }
     );
-  }
+    }
 }

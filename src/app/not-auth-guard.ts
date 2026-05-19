@@ -12,13 +12,9 @@ export const notAuthGuard: CanActivateFn = (route, state) => {
     responseType: 'text'
   }).pipe(
     map(() => {
-      // Oturum geçerliyse Login'e girişi engelle, events'e yönlendir
-      router.navigate(['/app/events']);
+      router.navigate(['/events']); // ← /app/events değil, /events
       return false;
     }),
-    catchError(() => {
-      // Oturum yoksa Login'e izin ver
-      return of(true);
-    })
+    catchError(() => of(true))
   );
 };

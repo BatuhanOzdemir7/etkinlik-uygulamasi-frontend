@@ -32,22 +32,12 @@
         <div class="d-flex align-items-center gap-2">
           <span class="status-badge">{{ event()!.status }}</span>
 
-          <!-- Reaktif Kayıt Butonu -->
-          @if (isRegistered()) {
             <button
               class="btn cyber-btn-danger"
               [disabled]="isActing()"
               (click)="leave()">
               {{ isActing() ? '...' : 'KAYDI İPTAL ET' }}
             </button>
-          } @else {
-            <button
-              class="btn cyber-btn"
-              [disabled]="isActing()"
-              (click)="join()">
-              {{ isActing() ? '...' : 'KAYIT OL' }}
-            </button>
-          }
         </div>
       </div>
 
