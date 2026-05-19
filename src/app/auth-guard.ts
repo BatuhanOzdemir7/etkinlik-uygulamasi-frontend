@@ -1,19 +1,26 @@
 import { HttpClient } from '@angular/common/http';
-import { inject } from '@angular/core';
+import { inject, PLATFORM_ID } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 import { map, catchError, of } from 'rxjs';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const http = inject(HttpClient);
   const router = inject(Router);
+  const platformId = inject(PLATFORM_ID);
 
-  // Backend'de sadece giriş yapmış kullanıcıların görebileceği bir uç noktaya doğrulama isteği atılır.
+  // Eğer kod sunucuda (Node.js) çalışıyorsa HTTP isteği atma, doğrudan izin ver.
+  // Kararı tarayıcı tarafındaki Angular motoruna bırakıyoruz.
+  if (!isPlatformBrowser(platformId)) {
+    return true;
+  }
+
+  // Kod tarayıcıya indiğinde asıl güvenli oturum kontrolünü yap
   return http.get('http://localhost:8090/event/control', {
-    withCredentials: true // Session bilgisini barındıran cookie'leri sunucuya taşır
+    withCredentials: true
   }).pipe(
-    map(() => true), // HTTP 200 dönerse oturum aktiftir, rota erişimine izin ver
+    map(() => true),
     catchError(() => {
-      // HTTP 401 veya 403 dönerse oturum yoktur veya düşmüştür, anasayfaya (Login) at
       localStorage.clear();
       router.navigate(['/']);
       return of(false);

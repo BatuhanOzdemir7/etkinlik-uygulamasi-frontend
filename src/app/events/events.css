@@ -1,0 +1,86 @@
+.terminal-container {
+  min-height: 85vh;
+}
+
+.neon-title {
+  color: #00ffff;
+  text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.vapor-card {
+  background: rgba(9, 2, 20, 0.95);
+  border: 1px solid #ff007f;
+  border-radius: 6px;
+  box-shadow: 0 0 15px rgba(255, 0, 127, 0.15);
+  transition: all 0.3s ease;
+}
+
+.vapor-card:hover {
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+  border-color: #00ffff;
+  transform: translateY(-5px);
+}
+
+.cyber-title {
+  color: #ff007f;
+  font-weight: bold;
+  text-shadow: 0 0 5px #ff007f;
+  letter-spacing: 1px;
+  font-size: 1.25rem;
+}
+
+/* Etiketlerin zikzak yapmasını engelleyen sabit genişlik */
+.matrix-label {
+  color: #888;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  min-width: 60px; 
+}
+
+.matrix-value {
+  color: #00ff00;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.95rem;
+}
+
+.neon-divider {
+  border-top: 1px solid #00ffff;
+  box-shadow: 0 0 5px #00ffff;
+  opacity: 0.4;
+  margin: 0.5rem 0;
+}
+
+.description {
+  color: #e0e0e0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+.capacity-badge {
+  background: rgba(255, 255, 0, 0.1);
+  color: #ffff00;
+  border: 1px dashed #ffff00;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-family: 'Courier New', Courier, monospace;
+  border-radius: 4px;
+}
+
+.cyber-btn {
+  background: transparent;
+  color: #00ffff;
+  border: 1px solid #00ffff;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 6px 16px;
+  transition: all 0.3s ease;
+}
+
+.cyber-btn:hover {
+  background: #00ffff;
+  color: #000;
+  box-shadow: 0 0 15px #00ffff;
+}
