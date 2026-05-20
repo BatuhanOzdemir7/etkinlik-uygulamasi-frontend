@@ -1,0 +1,288 @@
+/* ── Temel ── */
+.profile-wrapper {
+  min-height: 85vh;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Scanline efekti — arka planda hafif tarama çizgisi */
+.profile-wrapper::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 255, 255, 0.015) 2px,
+    rgba(0, 255, 255, 0.015) 4px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Kart ── */
+.vapor-card {
+  background: rgba(9, 2, 20, 0.95);
+  border: 1px solid #ff007f;
+  border-radius: 6px;
+  box-shadow: 0 0 20px rgba(255, 0, 127, 0.12);
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Avatar ── */
+.avatar-frame {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0;
+}
+
+.avatar-inner {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff007f, #00ffff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #000;
+  letter-spacing: 2px;
+}
+
+.avatar-ring {
+  position: absolute;
+  top: -4px; left: -4px;
+  width: 98px; height: 98px;
+  border-radius: 50%;
+  border: 2px solid #00ffff;
+  box-shadow: 0 0 12px #00ffff;
+  animation: ring-pulse 2s ease-in-out infinite;
+}
+
+@keyframes ring-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ── Profil metinleri ── */
+.cyber-name {
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  letter-spacing: 2px;
+}
+
+.badge-tag {
+  display: inline-block;
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid #00ffff;
+  color: #00ffff;
+  font-size: 0.75rem;
+  padding: 2px 12px;
+  border-radius: 3px;
+  letter-spacing: 2px;
+}
+
+.bio-text {
+  color: #aaa;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+.skills-line {
+  color: #ff007f;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+
+.terminal-text {
+  color: #666;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.85rem;
+}
+
+.cyber-pink  { color: #ff007f; }
+.cyber-cyan  { color: #00ffff; text-shadow: 0 0 8px #00ffff; }
+
+/* ── Butonlar ── */
+.cyber-btn {
+  background: transparent;
+  color: #00ffff;
+  border: 1px solid #00ffff;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  padding: 6px 16px;
+  transition: all 0.3s;
+}
+.cyber-btn:hover:not(:disabled) {
+  background: #00ffff;
+  color: #000;
+  box-shadow: 0 0 15px #00ffff;
+}
+.cyber-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.cyber-btn-edit {
+  background: transparent;
+  color: #ff007f;
+  border: 1px solid #ff007f;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  padding: 6px 14px;
+  transition: all 0.3s;
+}
+.cyber-btn-edit:hover {
+  background: #ff007f;
+  color: #000;
+  box-shadow: 0 0 15px #ff007f;
+}
+
+.cyber-btn-outline {
+  background: transparent;
+  color: #555;
+  border: 1px solid #555;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.85rem;
+  padding: 6px 16px;
+  transition: all 0.2s;
+}
+.cyber-btn-outline:hover {
+  border-color: #aaa;
+  color: #aaa;
+}
+
+/* ── İstatistik kartları ── */
+.stat-card {
+  background: rgba(9, 2, 20, 0.95);
+  border: 1px solid #222;
+  border-radius: 6px;
+  transition: border-color 0.3s;
+}
+.stat-card:hover { border-color: #ff007f; }
+
+.stat-number {
+  font-size: 3rem;
+  font-weight: 700;
+  font-family: 'Courier New', Courier, monospace;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+.stat-number.cyan  { color: #00ffff; text-shadow: 0 0 20px #00ffff; }
+.stat-number.green { color: #00ff00; text-shadow: 0 0 20px #00ff00; }
+.stat-number.pink  { color: #ff007f; text-shadow: 0 0 20px #ff007f; }
+
+.stat-label {
+  color: #555;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+}
+
+/* ── Sekme sistemi ── */
+.tab-bar {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 1px solid #222;
+  padding-bottom: 0.75rem;
+}
+
+.tab-btn {
+  background: transparent;
+  border: 1px solid #333;
+  color: #555;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  padding: 6px 16px;
+  border-radius: 3px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.tab-btn:hover { color: #aaa; border-color: #aaa; }
+.tab-btn.active {
+  color: #00ffff;
+  border-color: #00ffff;
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
+}
+
+/* ── Etkinlik kartları ── */
+.event-card {
+  background: rgba(255, 0, 127, 0.03);
+  border: 1px solid rgba(255, 0, 127, 0.2);
+  border-radius: 4px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.event-card:hover {
+  background: rgba(255, 0, 127, 0.08);
+  border-color: rgba(255, 0, 127, 0.5);
+}
+
+.event-title {
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Status pilleri */
+.status-pill {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 1px;
+  flex-shrink: 0;
+}
+.status-yayinda   { background: rgba(0,255,0,0.1);   color: #00ff00; border: 1px solid #00ff00; }
+.status-taslak    { background: rgba(255,255,0,0.1);  color: #ffff00; border: 1px solid #ffff00; }
+.status-arsivlendi { background: rgba(255,136,0,0.1); color: #ff8800; border: 1px solid #ff8800; }
+
+.category-pill {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 3px;
+  background: rgba(0,255,255,0.08);
+  color: #00ffff;
+  border: 1px solid rgba(0,255,255,0.3);
+  font-family: 'Courier New', Courier, monospace;
+  flex-shrink: 0;
+}
+
+/* ── Modal ── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.edit-modal {
+  width: 100%;
+  max-width: 480px;
+  border-color: #00ffff;
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+}
+
+.cyber-input {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid #333;
+  color: #00ff00;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: border-color 0.2s;
+  outline: none;
+}
+.cyber-input:focus { border-color: #00ffff; box-shadow: 0 0 8px rgba(0,255,255,0.2); }
+.cyber-input option { background: #0a0a1a; color: #00ff00; }

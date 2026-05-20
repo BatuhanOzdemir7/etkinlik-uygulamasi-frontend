@@ -1,0 +1,203 @@
+<div class="profile-wrapper container py-5">
+
+  @if (isLoading()) {
+    <div class="text-center mt-5">
+      <p class="terminal-text fs-5">// KİMLİK DOĞRULANIY OR...</p>
+    </div>
+  }
+
+  @if (error()) {
+    <div class="vapor-card p-4 text-center">
+      <p class="cyber-pink">{{ error() }}</p>
+    </div>
+  }
+
+  @if (!isLoading() && !error() && profile()) {
+
+    <!-- ═══════════════════════════════════════════
+         ÜST BİLGİ PANELİ
+    ═══════════════════════════════════════════ -->
+    <div class="profile-header vapor-card p-4 mb-4">
+      <div class="d-flex align-items-center gap-4 flex-wrap">
+
+        <!-- Avatar -->
+        <div class="avatar-frame">
+          <div class="avatar-inner">{{ getInitials() }}</div>
+          <div class="avatar-ring"></div>
+        </div>
+
+        <!-- Kimlik Bilgisi -->
+        <div class="flex-grow-1">
+          <div class="terminal-text mb-1" style="font-size: 0.75rem; color: #555;">
+            // KİMLİK DOĞRULANDI — KULLANICI_ID: {{ profile()!.id }}
+          </div>
+          <h2 class="cyber-name mb-1">{{ profile()!.name }} {{ profile()!.surname }}</h2>
+          <div class="badge-tag mb-2">
+            {{ profile()!.badge ?? 'NET_RUNNER' }}
+          </div>
+          <p class="bio-text">
+            {{ profile()!.bio ?? '// Biyografi kaydı bulunamadı. Veri boş.' }}
+          </p>
+
+          @if (topCategories().length > 0) {
+            <div class="skills-line terminal-text mt-2">
+              [SKILLS: {{ topCategories().join(' · ') }}]
+            </div>
+          }
+        </div>
+
+        <!-- Düzenle butonu — sadece kendi profili -->
+        @if (isMe()) {
+          <button class="btn cyber-btn-edit align-self-start" (click)="openEditModal()">
+            ✎ PROFİLİ DÜZENLE
+          </button>
+        }
+
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         İSTATİSTİK KARTLARI
+    ═══════════════════════════════════════════ -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-4">
+        <div class="stat-card text-center p-4">
+          <div class="stat-number cyan">{{ profile()!.hostedCount }}</div>
+          <div class="stat-label">[EVENTS_ORGANIZED]</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-card text-center p-4">
+          <div class="stat-number green">{{ profile()!.joinedCount }}</div>
+          <div class="stat-label">[CONNECTIONS_MADE]</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-card text-center p-4">
+          <div class="stat-number pink">{{ networkScore() }}</div>
+          <div class="stat-label">[AĞ_PUANI]</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SEKME SİSTEMİ
+    ═══════════════════════════════════════════ -->
+    <div class="vapor-card p-4">
+
+      <div class="tab-bar mb-4">
+        <button
+          class="tab-btn"
+          [class.active]="activeTab() === 'hosted'"
+          (click)="setTab('hosted')">
+          ▶ ORGANİZE ETTİKLERİM
+        </button>
+        <button
+          class="tab-btn"
+          [class.active]="activeTab() === 'joined'"
+          (click)="setTab('joined')">
+          ▶ KATILDIĞIM OPERASYONLAR
+        </button>
+      </div>
+
+      <!-- TAB 1: Organize Ettiklerim -->
+      @if (activeTab() === 'hosted') {
+        @if (profile()!.hostedEvents.length === 0) {
+          <p class="terminal-text text-center py-4">// Bu kullanıcıya ait kayıtlı etkinlik bulunamadı.</p>
+        } @else {
+          <div class="row g-3">
+            @for (event of profile()!.hostedEvents; track event.id) {
+              <div class="col-md-6">
+                <div class="event-card p-3" [routerLink]="['/events', event.id]" style="cursor:pointer">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <span class="event-title">{{ event.title }}</span>
+                    <!-- Status badge: kendi profilinde görünür -->
+                    @if (isMe()) {
+                      <span class="status-pill" [class]="'status-' + event.status?.toLowerCase()">
+                        {{ event.status }}
+                      </span>
+                    }
+                  </div>
+                  <div class="terminal-text" style="font-size: 0.8rem;">
+                    {{ event.eventDate }} · {{ event.location }}
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      }
+
+      <!-- TAB 2: Katıldıklarım -->
+      @if (activeTab() === 'joined') {
+        @if (profile()!.joinedEvents.length === 0) {
+          <p class="terminal-text text-center py-4">// Katılım kaydı bulunamadı.</p>
+        } @else {
+          <div class="row g-3">
+            @for (event of profile()!.joinedEvents; track event.id) {
+              <div class="col-md-6">
+                <div class="event-card p-3" [routerLink]="['/events', event.id]" style="cursor:pointer">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <span class="event-title">{{ event.title }}</span>
+                    <span class="category-pill">{{ event.category }}</span>
+                  </div>
+                  <div class="terminal-text" style="font-size: 0.8rem;">
+                    {{ event.eventDate }} · {{ event.location }}
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      }
+
+    </div>
+
+  }
+
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PROFİL DÜZENLEME MODAL
+═══════════════════════════════════════════ -->
+@if (showEditModal()) {
+  <div class="modal-backdrop" (click)="closeEditModal()">
+    <div class="edit-modal vapor-card p-4" (click)="$event.stopPropagation()">
+
+      <h4 class="cyber-cyan mb-4">// PROFİL GÜNCELLEME</h4>
+
+      <div class="mb-3">
+        <label class="terminal-text mb-2 d-block">> BİYOGRAFİ</label>
+        <textarea
+          class="cyber-input w-100"
+          rows="3"
+          [ngModel]="editBio()"
+          (ngModelChange)="editBio.set($event)">
+        </textarea>
+      </div>
+
+      <div class="mb-4">
+        <label class="terminal-text mb-2 d-block">> UNVAN (BADGE)</label>
+        <select
+          class="cyber-input w-100"
+          [ngModel]="editBadge()"
+          (ngModelChange)="editBadge.set($event)">
+          <option value="NET_RUNNER">NET_RUNNER</option>
+          <option value="SİSTEM_MİMARI">SİSTEM_MİMARI</option>
+          <option value="VERİ_ANALİSTİ">VERİ_ANALİSTİ</option>
+          <option value="SHADOW_CODER">SHADOW_CODER</option>
+          <option value="CORP_AGENT">CORP_AGENT</option>
+          <option value="GHOST_OPERATOR">GHOST_OPERATOR</option>
+        </select>
+      </div>
+
+      <div class="d-flex justify-content-end gap-3">
+        <button class="btn cyber-btn-outline" (click)="closeEditModal()">İPTAL</button>
+        <button class="btn cyber-btn" [disabled]="isSaving()" (click)="saveProfile()">
+          {{ isSaving() ? 'KAYDEDİLİYOR...' : 'KAYDET' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+}
