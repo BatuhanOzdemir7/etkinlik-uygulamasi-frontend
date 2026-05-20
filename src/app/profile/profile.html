@@ -62,13 +62,13 @@
     <div class="row g-3 mb-4">
       <div class="col-md-4">
         <div class="stat-card text-center p-4">
-          <div class="stat-number cyan">{{ profile()!.hostedCount }}</div>
+          <div class="stat-number cyan">{{ publishedHostedCount() }}</div>
           <div class="stat-label">[EVENTS_ORGANIZED]</div>
         </div>
       </div>
       <div class="col-md-4">
         <div class="stat-card text-center p-4">
-          <div class="stat-number green">{{ profile()!.joinedCount }}</div>
+          <div class="stat-number green">{{ publishedJoinedCount() }}</div>
           <div class="stat-label">[CONNECTIONS_MADE]</div>
         </div>
       </div>
@@ -102,11 +102,11 @@
 
       <!-- TAB 1: Organize Ettiklerim -->
       @if (activeTab() === 'hosted') {
-        @if (profile()!.hostedEvents.length === 0) {
-          <p class="terminal-text text-center py-4">// Bu kullanıcıya ait kayıtlı etkinlik bulunamadı.</p>
+        @if (publishedHostedEvents().length === 0) {
+          <p class="terminal-text text-center py-4">// Yayınlanmış etkinlik bulunamadı. Taslaklar burada gösterilmez.</p>
         } @else {
           <div class="row g-3">
-            @for (event of profile()!.hostedEvents; track event.id) {
+            @for (event of publishedHostedEvents(); track event.id) {
               <div class="col-md-6">
                 <div class="event-card p-3" [routerLink]="['/events', event.id]" style="cursor:pointer">
                   <div class="d-flex justify-content-between align-items-start mb-2">
@@ -130,11 +130,11 @@
 
       <!-- TAB 2: Katıldıklarım -->
       @if (activeTab() === 'joined') {
-        @if (profile()!.joinedEvents.length === 0) {
-          <p class="terminal-text text-center py-4">// Katılım kaydı bulunamadı.</p>
+        @if (publishedJoinedEvents().length === 0) {
+          <p class="terminal-text text-center py-4">// Yayınlanmış katılım kaydı bulunamadı. Taslak etkinlikler burada gösterilmez.</p>
         } @else {
           <div class="row g-3">
-            @for (event of profile()!.joinedEvents; track event.id) {
+            @for (event of publishedJoinedEvents(); track event.id) {
               <div class="col-md-6">
                 <div class="event-card p-3" [routerLink]="['/events', event.id]" style="cursor:pointer">
                   <div class="d-flex justify-content-between align-items-start mb-2">

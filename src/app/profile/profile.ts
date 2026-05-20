@@ -43,9 +43,9 @@ export class Profile implements OnInit {
   editBadge     = signal<string>('');
   isSaving      = signal<boolean>(false);
 
-  // İlgi alanı analizi: katıldığı etkinliklerin en çok geçen 3 kategorisi
+  // İlgi alanı analizi: sadece yayımlanmış katıldığım etkinliklerin en çok geçen 3 kategorisi
   topCategories = computed<string[]>(() => {
-    const joined = this.profile()?.joinedEvents ?? [];
+    const joined = this.publishedJoinedEvents();
     const freq: Record<string, number> = {};
     for (const event of joined) {
       if (event.category) {
@@ -58,11 +58,27 @@ export class Profile implements OnInit {
       .map(([cat]) => cat);
   });
 
-  // Ağ puanı: organizasyon * 10 + katılım * 3
+  // Sadece yayımlanmış organize edilen etkinlikler
+  publishedHostedEvents = computed<any[]>(() => {
+    return (this.profile()?.hostedEvents ?? []).filter(
+      event => event.status?.toUpperCase() === 'PUBLISHED'
+    );
+  });
+
+  publishedHostedCount = computed<number>(() => this.publishedHostedEvents().length);
+
+  // Sadece yayımlanmış katıldığım etkinlikler
+  publishedJoinedEvents = computed<any[]>(() => {
+    return (this.profile()?.joinedEvents ?? []).filter(
+      event => event.status?.toUpperCase() === 'PUBLISHED'
+    );
+  });
+
+  publishedJoinedCount = computed<number>(() => this.publishedJoinedEvents().length);
+
+  // Ağ puanı: yayımlanmış organizasyonlar * 10 + yayımlanmış katılımlar * 3
   networkScore = computed<number>(() => {
-    const p = this.profile();
-    if (!p) return 0;
-    return p.hostedCount * 10 + p.joinedCount * 3;
+    return this.publishedHostedCount() * 10 + this.publishedJoinedCount() * 3;
   });
 
   ngOnInit(): void {
