@@ -79,4 +79,28 @@ export class EventService {
         { withCredentials: true }
     );
     }
+
+searchEvents(
+  q: string,
+  page: number = 0,
+  sortDir: string = 'asc',
+  category?: string,
+  location?: string,
+  host?: string,
+  title?: string,
+  description?: string,
+  dateFrom?: string,
+  dateTo?: string
+): Observable<IPageResponse<IEvent>> {
+  let url = `${this.apiUrl}/search?q=${q}&page=${page}&sortDir=${sortDir}`;
+  if (category) url += `&category=${encodeURIComponent(category)}`;
+  if (location) url += `&location=${encodeURIComponent(location)}`;
+  if (host) url += `&host=${encodeURIComponent(host)}`;
+  if (title) url += `&title=${encodeURIComponent(title)}`;
+  if (description) url += `&description=${encodeURIComponent(description)}`;
+  if (dateFrom) url += `&dateFrom=${encodeURIComponent(dateFrom)}`;
+  if (dateTo) url += `&dateTo=${encodeURIComponent(dateTo)}`;
+
+  return this.http.get<IPageResponse<IEvent>>(url, { withCredentials: true });
+}
 }

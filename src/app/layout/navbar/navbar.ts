@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
     standalone: true,
@@ -12,6 +12,7 @@ import { RouterModule } from '@angular/router';
 export class Navbar {
 
     private http = inject(HttpClient);
+    private router = inject(Router);
     globalName = 'Guest';
 
     constructor() {
@@ -20,6 +21,19 @@ export class Navbar {
             this.globalName = name;
         }
     }
+
+    onSearch(query: string) {
+            if (query && query.trim() !== '') {
+                // Kullanıcıyı arama parametresi ile etkinlikler sayfasına yönlendirir
+                this.router.navigate(['/event/search'], { 
+                  queryParams: { 
+                    q: query.trim(),
+                    page: 0,
+                    sortDir: 'asc'
+                  } 
+                });
+            }
+        }
 
     logout() {
         const answer = confirm('Çıkış yapmak istediğinize emin misiniz?');

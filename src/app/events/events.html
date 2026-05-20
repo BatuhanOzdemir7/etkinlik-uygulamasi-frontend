@@ -1,6 +1,62 @@
 <div class="terminal-container container py-5">
-  <h2 class="neon-title text-center mb-5">SİSTEM AĞI // AKTİF ETKİNLİKLER</h2>
-  
+  <h2 class="neon-title text-center mb-4">SİSTEM AĞI // AKTİF ETKİNLİKLER</h2>
+
+  <!-- Compact Search Bar with Filter Icon -->
+  <div class="search-bar-container mb-4">
+    <div class="search-bar-wrapper">
+      <input
+        type="text"
+        class="search-bar-input"
+        [ngModel]="searchQuery()"
+        (ngModelChange)="setSearchQuery($event)"
+        placeholder="Etkinlikleri ara...">
+      
+      <button
+        class="filter-icon-btn"
+        (click)="toggleFilterModal()"
+        title="Filtreleri seç">
+        <i class="bi bi-funnel"></i>
+      </button>
+    </div>
+
+    <!-- Filter Modal Dropdown -->
+    @if (showFilterModal()) {
+      <div class="filter-modal">
+        <div class="filter-modal-header">
+          <span class="filter-modal-title">Nerelerde Ara?</span>
+          <button class="close-modal-btn" (click)="toggleFilterModal()">
+            <i class="bi bi-x"></i>
+          </button>
+        </div>
+        <div class="filter-modal-body">
+          @for (option of filterOptions; track option.id) {
+            <label class="filter-checkbox-item">
+              <input
+                type="checkbox"
+                [checked]="selectedFilterFields().includes(option.id)"
+                (change)="toggleFilterField(option.id)">
+              <span class="checkbox-label">{{ option.label }}</span>
+            </label>
+          }
+        </div>
+        <div class="filter-modal-footer">
+          <button class="btn cyber-btn clear-filters-btn" (click)="clearFilters()">
+            TEMİZLE
+          </button>
+        </div>
+      </div>
+    }
+
+    <!-- Sort Direction Selector -->
+    <select
+      class="sort-selector"
+      [ngModel]="sortDirection()"
+      (ngModelChange)="setSortDirection($event)">
+      <option value="asc">Önce En Yakın</option>
+      <option value="desc">Önce En Eski</option>
+    </select>
+  </div>
+
   <div class="row align-items-stretch">
     @for (event of eventList(); track event.id) {
       <div class="col-md-4 mb-4">

@@ -20,6 +20,7 @@ export const routes: Routes = [
         canActivate: [authGuard],
         children: [
             { path: 'events', component: Events },
+            { path: 'event/search', component: Events },
             { path: 'events/:id', component: EventDetail },
             { path: 'my-drafts', component: MyDrafts },
             { path: 'create-event', component: EventCreate },

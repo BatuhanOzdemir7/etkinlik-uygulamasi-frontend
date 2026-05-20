@@ -83,3 +83,57 @@
 .custom-toggler .navbar-toggler-icon {
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%23ff007f' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E") !important;
 }
+
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: rgba(0, 255, 255, 0.05);
+  border: 1px solid #00ffff;
+  border-radius: 25px;
+  width: 40px;
+  height: 40px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  box-shadow: 0 0 5px rgba(0, 255, 255, 0.2);
+}
+
+.search-container:hover,
+.search-container:focus-within {
+  width: 250px;
+  background: rgba(0, 255, 255, 0.15);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+}
+
+.search-icon {
+  color: #00ffff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-left: 10px;
+  flex-shrink: 0;
+  text-shadow: 0 0 5px #00ffff;
+}
+
+.search-input {
+  border: none;
+  background: transparent;
+  color: #fff;
+  outline: none;
+  width: 100%;
+  padding-left: 12px;
+  padding-right: 15px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  pointer-events: none;
+}
+
+.search-container:hover .search-input,
+.search-container:focus-within .search-input {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+}

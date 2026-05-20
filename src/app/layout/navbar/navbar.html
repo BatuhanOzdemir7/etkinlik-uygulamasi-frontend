@@ -39,8 +39,19 @@
           </a>
         </li>
       </ul>
-      
-      <div class="d-flex">
+        <div class="d-flex align-items-center gap-3">
+        
+        <div class="search-container">
+          <i class="bi bi-search search-icon" (click)="onSearch(searchInput.value)"></i>
+          <input 
+            type="text" 
+            #searchInput 
+            class="search-input" 
+            placeholder="Etkinlik ara..." 
+            (keyup.enter)="onSearch(searchInput.value)"
+          >
+        </div>
+
         <button class="btn logout-btn" (click)="logout()">OTURUMU KAPAT</button>
       </div>
     </div>
