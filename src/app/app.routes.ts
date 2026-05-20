@@ -20,6 +20,7 @@ export const routes: Routes = [
             { path: 'events', component: Events },
             { path: 'events/:id', component: EventDetail },
             { path: 'my-drafts', component: MyDrafts },
+            { path: 'create-event', component: EventCreate },
             { path: 'events/:id/edit', component: EventCreate }
         ]
     },
