@@ -8,6 +8,7 @@ import { EventCreate } from './event-create/event-create';
 import { authGuard } from './auth-guard';
 import { notAuthGuard } from './not-auth-guard';
 import { MainLayout } from './layout/main-layout/main-layout';
+import { MyArchives } from './my-archives/my-archives';
 
 export const routes: Routes = [
     { path: '', component: Login, canActivate: [notAuthGuard] },
@@ -21,7 +22,8 @@ export const routes: Routes = [
             { path: 'events/:id', component: EventDetail },
             { path: 'my-drafts', component: MyDrafts },
             { path: 'create-event', component: EventCreate },
-            { path: 'events/:id/edit', component: EventCreate }
+            { path: 'events/:id/edit', component: EventCreate },
+            { path: 'my-archives', component: MyArchives }
         ]
     },
     { path: '**', redirectTo: '' }
