@@ -16,7 +16,43 @@
   color: #ff007f !important;
   font-weight: 500;
   letter-spacing: 1px;
-  transition: all 0.3s ease;
+  transition: color 0.25s ease, text-shadow 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.nav-icon-item {
+  display: flex;
+  align-items: center;
+}
+
+.nav-icon-item .nav-link {
+  padding: 0.65rem 0.75rem;
+}
+
+.nav-icon-item .bi {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.nav-icon-item .nav-text {
+  display: inline-block;
+  max-width: 0;
+  opacity: 0;
+  margin-left: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: max-width 0.25s ease, opacity 0.25s ease, margin-left 0.25s ease;
+}
+
+.nav-icon-item:hover .nav-text,
+.nav-icon-item .nav-link.active-link .nav-text,
+.nav-icon-item .nav-link.router-link-active .nav-text {
+  max-width: 220px;
+  opacity: 1;
+  margin-left: 0.5rem;
 }
 
 .retro-nav-link:hover, .active-link {
