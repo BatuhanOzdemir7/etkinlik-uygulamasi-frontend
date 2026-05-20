@@ -1,8 +1,8 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { EventService, IEvent } from '../services/event.service';
-import { RouterModule, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-events',
@@ -12,110 +12,49 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
   styleUrls: ['./events.css']
 })
 export class Events implements OnInit {
-  
+
   private eventService = inject(EventService);
-  private route = inject(ActivatedRoute);
-  
-  eventList = signal<IEvent[]>([]);
-  currentPage = signal<number>(0);
-  totalPages = signal<number>(0);
+  private route        = inject(ActivatedRoute);
+  private router       = inject(Router);
 
-  searchQuery = signal<string>('');
-  selectedFilterFields = signal<string[]>(['title']);
-  showFilterModal = signal<boolean>(false);
-  sortDirection = signal<'asc' | 'desc'>('asc');
-
-  filterOptions = [
-    { id: 'title', label: 'Başlık' },
-    { id: 'description', label: 'Açıklama' },
-    { id: 'host', label: 'Host' },
-    { id: 'location', label: 'Konum' },
-    { id: 'category', label: 'Kategori' }
-  ];
+  eventList            = signal<IEvent[]>([]);
+  currentPage          = signal<number>(0);
+  totalPages           = signal<number>(0);
+  searchQuery          = signal<string>('');
+  isSearchMode         = signal<boolean>(false);
+  sortDirection        = signal<'asc' | 'desc'>('asc');
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      const q = params['q'] ?? '';
-      const fields = params['fields'] ? params['fields'].split(',') : ['title'];
+      const q    = params['q'] ? params['q'].trim() : '';
       const page = params['page'] ? parseInt(params['page'], 10) : 0;
       const sort = params['sortDir'] === 'desc' ? 'desc' : 'asc';
 
-      this.searchQuery.set(q.trim());
-      this.selectedFilterFields.set(fields);
+      this.searchQuery.set(q);
       this.currentPage.set(page);
       this.sortDirection.set(sort);
+      this.isSearchMode.set(!!q);
 
       this.loadEvents();
     });
   }
 
   loadEvents(): void {
-    const query = this.searchQuery().trim();
-    const fields = this.selectedFilterFields();
+    const query   = this.searchQuery().trim();
     const sortDir = this.sortDirection();
 
-    if (query === '' || fields.length === 0) {
+    if (!query) {
       this.eventService.getEvents(this.currentPage()).subscribe({
-        next: (response) => {
-          this.eventList.set(response.content);
-          this.totalPages.set(response.totalPages);
-        },
-        error: (err) => {
-          console.error('Etkinlik ağa bağlanırken hata oluştu:', err);
-          this.eventList.set([]);
-        }
+        next: (res) => { this.eventList.set(res.content); this.totalPages.set(res.totalPages); },
+        error: (err) => { console.error(err); this.eventList.set([]); }
       });
       return;
     }
 
-    const params: any = {
-      title: fields.includes('title') ? query : undefined,
-      description: fields.includes('description') ? query : undefined,
-      host: fields.includes('host') ? query : undefined,
-      location: fields.includes('location') ? query : undefined,
-      category: fields.includes('category') ? query : undefined
-    };
-
-    this.eventService.searchEvents(
-      '',
-      this.currentPage(),
-      sortDir,
-      params.category,
-      params.location,
-      params.host,
-      params.title,
-      params.description
-    ).subscribe({
-      next: (response) => {
-        this.eventList.set(response.content);
-        this.totalPages.set(response.totalPages);
-      },
-      error: (err) => {
-        console.error('Etkinlik ağa bağlanırken hata oluştu:', err);
-        this.eventList.set([]);
-      }
+    this.eventService.searchEvents(query, this.currentPage(), sortDir).subscribe({
+      next: (res) => { this.eventList.set(res.content); this.totalPages.set(res.totalPages); },
+      error: (err) => { console.error(err); this.eventList.set([]); }
     });
-  }
-
-  setSearchQuery(value: string): void {
-    this.searchQuery.set(value);
-    this.currentPage.set(0);
-    this.loadEvents();
-  }
-
-  toggleFilterField(fieldId: string): void {
-    const current = this.selectedFilterFields();
-    if (current.includes(fieldId)) {
-      this.selectedFilterFields.set(current.filter(f => f !== fieldId));
-    } else {
-      this.selectedFilterFields.set([...current, fieldId]);
-    }
-    this.currentPage.set(0);
-    this.loadEvents();
-  }
-
-  toggleFilterModal(): void {
-    this.showFilterModal.set(!this.showFilterModal());
   }
 
   setSortDirection(direction: string): void {
@@ -124,28 +63,13 @@ export class Events implements OnInit {
     this.loadEvents();
   }
 
-  clearFilters(): void {
-    this.searchQuery.set('');
-    this.selectedFilterFields.set(['title']);
-    this.sortDirection.set('asc');
-    this.currentPage.set(0);
-    this.loadEvents();
-  }
-
   registerToEvent(eventId: number): void {
     this.eventService.joinEvent(eventId).subscribe({
-      next: () => {
-        alert('Etkinliğe başarıyla kayıt oldunuz!');
-        this.loadEvents();
-      },
-      error: (err) => {
-        const errorMsg = err.error?.message || 'Kayıt işlemi sırasında bir hata oluştu.';
-        alert('Kayıt Başarısız: ' + errorMsg);
-      }
+      next: () => { alert('Etkinliğe başarıyla kayıt oldunuz!'); this.loadEvents(); },
+      error: (err) => alert('Kayıt Başarısız: ' + (err.error?.message || 'Hata oluştu.'))
     });
   }
 
-  // Sonraki Sayfa Metodu
   nextPage(): void {
     if (this.currentPage() < this.totalPages() - 1) {
       this.currentPage.set(this.currentPage() + 1);
@@ -153,7 +77,6 @@ export class Events implements OnInit {
     }
   }
 
-  // Önceki Sayfa Metodu
   prevPage(): void {
     if (this.currentPage() > 0) {
       this.currentPage.set(this.currentPage() - 1);

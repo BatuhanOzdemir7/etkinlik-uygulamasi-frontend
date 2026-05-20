@@ -40,20 +40,20 @@
         </li>
       </ul>
         <div class="d-flex align-items-center gap-3">
-        
-        <div class="search-container">
-          <i class="bi bi-search search-icon" (click)="onSearch(searchInput.value)"></i>
-          <input 
-            type="text" 
-            #searchInput 
-            class="search-input" 
-            placeholder="Etkinlik ara..." 
-            (keyup.enter)="onSearch(searchInput.value)"
-          >
-        </div>
+          <div class="search-container me-3">
+            <i class="bi bi-search search-icon" (click)="onSearch()"></i>
+            <input
+              class="search-input"
+              type="search"
+              placeholder="Etkinlik ara..."
+              [(ngModel)]="searchQuery"
+              [ngModelOptions]="{standalone: true}"
+              (ngModelChange)="onSearch()"
+            />
+          </div>
 
-        <button class="btn logout-btn" (click)="logout()">OTURUMU KAPAT</button>
+          <button class="btn logout-btn" (click)="logout()">OTURUMU KAPAT</button>
+        </div>
       </div>
-    </div>
   </div>
 </nav>

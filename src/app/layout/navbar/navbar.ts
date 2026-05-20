@@ -1,47 +1,22 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-
+import { Component, inject, signal } from '@angular/core';
+import { RouterModule, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     standalone: true,
     selector: 'app-navbar',
-    imports: [RouterModule],
+    imports: [RouterModule, CommonModule, FormsModule],
     templateUrl: './navbar.html',
     styleUrls: ['./navbar.css']
 })
-export class Navbar implements OnInit {
-
-    myNickname: string = '';
-
-    ngOnInit(): void {
-        // Tarayıcıdan nickname'i oku
-        this.myNickname = localStorage.getItem('myNickname') || '';
-    }
-
+export class Navbar {
     private http = inject(HttpClient);
     private router = inject(Router);
-    globalName = 'Guest';
 
-    constructor() {
-        const name = localStorage.getItem('name');
-        if (name) {
-            this.globalName = name;
-        }
-    }
-
-    onSearch(query: string) {
-            if (query && query.trim() !== '') {
-                // Kullanıcıyı arama parametresi ile etkinlikler sayfasına yönlendirir
-                this.router.navigate(['/event/search'], { 
-                  queryParams: { 
-                    q: query.trim(),
-                    page: 0,
-                    sortDir: 'asc'
-                  } 
-                });
-            }
-        }
+    myNickname = localStorage.getItem('username') ?? '';
+    searchQuery = signal<string>('');
 
     logout() {
         const answer = confirm('Çıkış yapmak istediğinize emin misiniz?');
@@ -50,15 +25,18 @@ export class Navbar implements OnInit {
                 withCredentials: true,
                 responseType: 'text'
             }).subscribe({
-                next: () => {
-                    localStorage.clear();
-                    window.location.href = '/';
-                },
-                error: () => {
-                    localStorage.clear();
-                    window.location.href = '/';
-                }
+                next: () => { localStorage.clear(); window.location.href = '/'; },
+                error: () => { localStorage.clear(); window.location.href = '/'; }
             });
         }
+    }
+
+    onSearch(): void {
+        const q = this.searchQuery().trim();
+        if (!q) {
+            this.router.navigate(['/events']);
+            return;
+        }
+        this.router.navigate(['/events'], { queryParams: { q } });
     }
 }
