@@ -11,6 +11,7 @@ export interface IPageResponse<T> {
 
 export interface IUser {
   id: number;
+  nickname: string;
   name: string;
   surname: string;
   email: string;

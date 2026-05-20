@@ -18,6 +18,7 @@ export class Register {
 
   constructor(private formBuilder: FormBuilder) {
     this.registerForm = this.formBuilder.group({
+      nickname: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
       surname: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
       email: ['', [Validators.required, Validators.email]],

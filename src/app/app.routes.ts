@@ -21,13 +21,16 @@ export const routes: Routes = [
         children: [
             { path: 'events', component: Events },
             { path: 'event/search', component: Events },
+            
+            // DÜZELTİLEN BÖLÜM (Sıralama çok önemlidir)
+            { path: 'profile/me', component: Profile },          // Önce sabit rotalar
+            { path: 'profile/:nickname', component: Profile },   // Sonra dinamik parametreli rotalar
+            
             { path: 'events/:id', component: EventDetail },
+            { path: 'events/:id/edit', component: EventCreate },
             { path: 'my-drafts', component: MyDrafts },
             { path: 'create-event', component: EventCreate },
-            { path: 'events/:id/edit', component: EventCreate },
-            { path: 'my-archives', component: MyArchives },
-            { path: 'profile/me',component: Profile},
-            { path: 'profile/:id',component: Profile}
+            { path: 'my-archives', component: MyArchives }
         ]
     },
     { path: '**', redirectTo: '' }

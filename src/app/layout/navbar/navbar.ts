@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+
 
 @Component({
     standalone: true,
@@ -9,7 +10,14 @@ import { Router, RouterModule } from '@angular/router';
     templateUrl: './navbar.html',
     styleUrls: ['./navbar.css']
 })
-export class Navbar {
+export class Navbar implements OnInit {
+
+    myNickname: string = '';
+
+    ngOnInit(): void {
+        // Tarayıcıdan nickname'i oku
+        this.myNickname = localStorage.getItem('myNickname') || '';
+    }
 
     private http = inject(HttpClient);
     private router = inject(Router);

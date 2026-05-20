@@ -17,7 +17,6 @@ export class Login {
 
   constructor(private formBuilder: FormBuilder) {
     this.loginForm = this.formBuilder.group({
-      // HTML'de 'username' demiştik, e-posta adresi için kullanıyoruz.
       username: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
@@ -27,14 +26,14 @@ export class Login {
     if (this.loginForm.valid) {
       const loginData = this.loginForm.value;
       
-      // Spring Boot Backend'ine doğrudan istek atıyoruz (Hocanın yöntemi)
       this.http.post('http://localhost:8090/user/login', loginData, { withCredentials: true }).subscribe({
         next: (response) => {
-           // Gelen yanıtı any olarak yakalayıp parçalıyoruz
-           const { id, name, surname, email } = response as any;
+           // Gelen yanıtı any olarak yakalayıp parçalıyoruz (nickname eklendi)
+           const { id, name, surname, email, nickname } = response as any;
            
            // Tarayıcı hafızasına kayıt
            localStorage.setItem('userId', id);
+           localStorage.setItem('myNickname', nickname); // Düzeltilen Satır
            localStorage.setItem('name', name + ' ' + surname);
            localStorage.setItem('email', email);
            

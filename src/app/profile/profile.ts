@@ -81,58 +81,56 @@ export class Profile implements OnInit {
     return this.publishedHostedCount() * 10 + this.publishedJoinedCount() * 3;
   });
 
-  ngOnInit(): void {
-    const idParam = this.route.snapshot.paramMap.get('id');
+ngOnInit(): void {
+  // Rota her zaman doğrudan nickname ile gelecek (/profile/batuhan77demir@gmail.com)
+  const nicknameParam = this.route.snapshot.paramMap.get('nickname');
+  const myNickname = localStorage.getItem('myNickname');
 
-    if (!idParam) {
-      // /profile/me rotası — kendi profili
-      this.isMe.set(true);
-      this.loadMyProfile();
+  if (nicknameParam) {
+    // URL'deki nickname, benim tarayıcımdaki nickname ile aynı mı?
+    if (nicknameParam === myNickname) {
+      this.isMe.set(true); // Kendi profilim (Taslakları vs. göster)
     } else {
-      // /profile/:id rotası — başkasının profili
-      // Kendi ID'siyle girilip girilmediğini kontrol etmek için önce /me çek
-      this.http.get<any>(`${this.apiUrl}/me`, { withCredentials: true }).subscribe({
-        next: (res) => {
-          if (res.success && res.user.id === Number(idParam)) {
-            this.isMe.set(true);
-            this.loadMyProfile();
-          } else {
-            this.isMe.set(false);
-            this.loadProfileById(Number(idParam));
-          }
-        },
-        error: () => {
-          this.isMe.set(false);
-          this.loadProfileById(Number(idParam));
-        }
-      });
+      this.isMe.set(false); // Başkasının profili
     }
+    
+    // Doğrudan yükle
+    this.loadProfileByNickname(nicknameParam);
   }
+}
 
-  private loadMyProfile(): void {
-    this.http.get<any>(`${this.apiUrl}/profile/me`, { withCredentials: true }).subscribe({
-      next: (res) => {
-        this.profile.set(res.profile);
-        this.editBio.set(res.profile.bio ?? '');
-        this.editBadge.set(res.profile.badge ?? 'NET_RUNNER');
-        this.isLoading.set(false);
-      },
-      error: () => {
-        this.error.set('Profil verisi yüklenemedi.');
-        this.isLoading.set(false);
-      }
-    });
-  }
+private loadProfileByNickname(nickname: string): void {
+    // İsteğe başlarken yükleme ekranını aç
+    this.isLoading.set(true); 
 
-  private loadProfileById(id: number): void {
-    this.http.get<any>(`${this.apiUrl}/profile/${id}`, { withCredentials: true }).subscribe({
-      next: (res) => {
-        this.profile.set(res.profile);
-        this.isLoading.set(false);
+    this.http.get<any>(`${this.apiUrl}/profile/${nickname}`, { withCredentials: true }).subscribe({
+      next: (res: any) => {
+        console.log("Backend'den Gelen Profil Verisi:", res);
+        
+        // 1. PROFİLİ SET ET (Signal kullanıldığı için .set() ile)
+        if (res.profile) {
+          this.profile.set(res.profile); 
+          // Düzenleme modalı için değerleri hazırla
+          this.editBio.set(res.profile.bio ?? '');
+          this.editBadge.set(res.profile.badge ?? 'NET_RUNNER');
+        } else if (res.nickname) { 
+          this.profile.set(res); 
+          this.editBio.set(res.bio ?? '');
+          this.editBadge.set(res.badge ?? 'NET_RUNNER');
+        } else {
+          console.error("Gelen veride profil bulunamadı! Veri yapısı uyuşmuyor.");
+          this.error.set("Profil verisi bulunamadı.");
+        }
+
+        // 2. YÜKLEME EKRANINI KAPAT
+        this.isLoading.set(false); 
       },
-      error: () => {
-        this.error.set('Profil verisi yüklenemedi.');
-        this.isLoading.set(false);
+      error: (err: any) => {
+        console.error('Profil yüklenirken HTTP Hatası oluştu:', err);
+        this.error.set("Profil verisi çekilemedi.");
+        
+        // Hata durumunda da yükleme ekranını sonsuz döngüden kurtar
+        this.isLoading.set(false); 
       }
     });
   }

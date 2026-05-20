@@ -6,7 +6,19 @@
     </div>
 
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-
+      <div class="mb-3">
+        <label for="nickname" class="form-label retro-label">Kullanıcı Adı</label>
+        <input
+          type="text"
+          class="form-control retro-input"
+          id="nickname"
+          formControlName="nickname"
+          placeholder="benzersiz_kullanici_adi">
+        <div class="invalid-feedback neon-error"
+            *ngIf="registerForm.get('nickname')?.invalid && registerForm.get('nickname')?.touched">
+          [HATA] Kullanıcı adı en az 3 karakter olmalıdır.
+        </div>
+      </div>
       <div class="mb-3">
         <label for="name" class="form-label retro-label">Birim Adı</label>
         <input 

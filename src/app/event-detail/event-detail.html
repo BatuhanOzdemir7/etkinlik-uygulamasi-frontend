@@ -105,13 +105,19 @@
         </div>
       </div>
 
-      <div class="host-card d-flex align-items-center gap-3">
-        <div class="avatar-circle">
+<div class="host-card d-flex align-items-center gap-3">
+        <div class="avatar-circle" 
+             style="cursor: pointer;" 
+             [routerLink]="['/profile', event()!.owner.nickname]">
           {{ event()!.owner.name[0].toUpperCase() }}{{ event()!.owner.surname[0].toUpperCase() }}
         </div>
         <div>
           <div class="matrix-label" style="font-size: 0.75rem;">ETKİNLİK SAHİBİ</div>
-          <div class="matrix-value">{{ event()!.owner.name }} {{ event()!.owner.surname }}</div>
+          <div class="matrix-value" 
+               style="cursor: pointer;" 
+               [routerLink]="['/profile', event()!.owner.nickname]">
+               {{ event()!.owner.name }} {{ event()!.owner.surname }}
+          </div>
           <div class="host-email">{{ event()!.owner.email }}</div>
         </div>
       </div>
@@ -129,13 +135,19 @@
         <p class="matrix-label text-center py-3">// Henüz kayıtlı katılımcı yok...</p>
       } @else {
         <ul class="participants-list">
-          @for (user of participants(); track user.id) {
+            @for (user of participants(); track user.id) {
             <li class="participant-item">
-              <div class="avatar-circle avatar-sm">
+              <div class="avatar-circle avatar-sm" 
+                   style="cursor: pointer;" 
+                   [routerLink]="['/profile', user.nickname]">
                 {{ user.name[0].toUpperCase() }}{{ user.surname[0].toUpperCase() }}
               </div>
               <div class="flex-grow-1">
-                <div class="matrix-value">{{ user.name }} {{ user.surname }}</div>
+                <div class="matrix-value" 
+                     style="cursor: pointer;" 
+                     [routerLink]="['/profile', user.nickname]">
+                     {{ user.name }} {{ user.surname }}
+                </div>
                 <div class="host-email">{{ user.email }}</div>
               </div>
             </li>
