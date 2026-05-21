@@ -20,6 +20,8 @@
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
+                "src/fishnetlogo.svg",
+                "src/favicon.ico",
               {
                 "glob": "**/*",
                 "input": "public"

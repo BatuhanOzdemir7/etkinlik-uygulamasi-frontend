@@ -131,3 +131,38 @@
   color: rgba(255, 255, 255, 0.75);
   font-style: italic;
 }
+
+/* navbar.css */
+.nav-logo {
+    width: 55px !important;    /* Logoyu biraz daha belirgin hale getirdik */
+    height: 55px !important;
+    object-fit: contain;
+    
+    /* Yazı ile logo arasında biraz daha nefes alacak boşluk */
+    margin-right: 15px !important; 
+    
+    /* Neon parlamayı logoya da uygulayalım ki bütünlük sağlansın */
+    filter: drop-shadow(0 0 8px #00ffff);
+    
+    /* Dikey hizalamayı garantile */
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Navbar markasının kendisini de dikeyde hizalayalım */
+.navbar-brand {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.neon-brand-text {
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+    position: relative;
+}
+
+/* Basit bir hover glitch efekti ekleyelim */
+.neon-brand-text:hover {
+    text-shadow: 2px 0 #ff00ff, -2px 0 #00ffff;
+}
