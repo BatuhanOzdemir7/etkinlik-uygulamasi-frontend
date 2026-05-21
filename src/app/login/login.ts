@@ -26,18 +26,23 @@ export class Login {
     if (this.loginForm.valid) {
       const loginData = this.loginForm.value;
       
-      this.http.post('http://localhost:8090/user/login', loginData, { withCredentials: true }).subscribe({
-        next: (response) => {
-           // Gelen yanıtı any olarak yakalayıp parçalıyoruz (nickname eklendi)
-           const { id, name, surname, email, nickname } = response as any;
+this.http.post('http://localhost:8090/user/login', loginData, { withCredentials: true }).subscribe({
+        next: (response: any) => {
+           console.log("Login'den dönen saf cevap:", response); // F12'den görmek için
+           
+           // Backend veriyi 'user', 'data' veya direkt kök dizinde gönderebilir. Hepsini kontrol et:
+           const user = response.data || response.user || response.profile || response;
+           
+           // KESİN ÇÖZÜM: Eğer backend nickname göndermiyorsa, e-postanın @'ten önceki kısmını al
+           const finalNickname = user.nickname || user.email.split('@')[0];
            
            // Tarayıcı hafızasına kayıt
-           localStorage.setItem('userId', id);
-           localStorage.setItem('myNickname', nickname); // Düzeltilen Satır
-           localStorage.setItem('name', name + ' ' + surname);
-           localStorage.setItem('email', email);
+           localStorage.setItem('userId', user.id);
+           localStorage.setItem('myNickname', finalNickname); // Artık asla 'null' olmayacak
+           localStorage.setItem('name', user.name + ' ' + user.surname);
+           localStorage.setItem('email', user.email);
            
-           // Angular Router yerine doğrudan pencere yönlendirmesi
+           // Ana sayfaya yönlendir
            window.location.href = '/'; 
         },
         error: (error) => {

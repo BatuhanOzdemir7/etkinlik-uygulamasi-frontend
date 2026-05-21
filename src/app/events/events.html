@@ -32,7 +32,7 @@
             <div class="d-flex align-items-center mb-3">
               <span class="matrix-label me-2">Host:</span>
               <a [routerLink]="['/app/profile', event.owner.nickname]" class="neon-link">
-                {{ event.owner.name || 'Sistem Admin' }}
+                {{ event.owner.name || 'Sistem Admin' }} {{ event.owner.surname }}
               </a>
             </div>
             

@@ -15,7 +15,11 @@ export class Navbar {
     private http = inject(HttpClient);
     private router = inject(Router);
 
-    myNickname = localStorage.getItem('username') ?? '';
+// GET metodu kullandığımız için, HTML'de bu değişkene her tıklandığında 
+// gidip localStorage'daki en taze veriyi anlık olarak okuyacaktır.
+get myNickname(): string {
+  return localStorage.getItem('myNickname') || '';
+}
     searchQuery = signal<string>('');
 
     logout() {

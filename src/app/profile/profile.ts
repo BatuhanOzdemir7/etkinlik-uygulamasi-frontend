@@ -82,35 +82,32 @@ export class Profile implements OnInit {
   });
 
 ngOnInit(): void {
-  // Rota her zaman doğrudan nickname ile gelecek (/profile/batuhan77demir@gmail.com)
-  const nicknameParam = this.route.snapshot.paramMap.get('nickname');
-  const myNickname = localStorage.getItem('myNickname');
+    const nicknameParam = this.route.snapshot.paramMap.get('nickname');
+    const myNickname = localStorage.getItem('myNickname');
 
-  if (nicknameParam) {
-    // URL'deki nickname, benim tarayıcımdaki nickname ile aynı mı?
+    // 1. GÜVENLİK KONTROLÜ: Nickname yoksa veya boşa düşmüşse yüklemeyi anında kes
+    if (!nicknameParam || nicknameParam === 'null') {
+      this.error.set('Profil bilgisi bulunamadı. Lütfen oturumunuzu kontrol edin.');
+      this.isLoading.set(false); 
+      return; 
+    }
+
     if (nicknameParam === myNickname) {
-      this.isMe.set(true); // Kendi profilim (Taslakları vs. göster)
+      this.isMe.set(true); 
     } else {
-      this.isMe.set(false); // Başkasının profili
+      this.isMe.set(false); 
     }
     
-    // Doğrudan yükle
     this.loadProfileByNickname(nicknameParam);
   }
-}
 
 private loadProfileByNickname(nickname: string): void {
-    // İsteğe başlarken yükleme ekranını aç
     this.isLoading.set(true); 
 
     this.http.get<any>(`${this.apiUrl}/profile/${nickname}`, { withCredentials: true }).subscribe({
       next: (res: any) => {
-        console.log("Backend'den Gelen Profil Verisi:", res);
-        
-        // 1. PROFİLİ SET ET (Signal kullanıldığı için .set() ile)
         if (res.profile) {
           this.profile.set(res.profile); 
-          // Düzenleme modalı için değerleri hazırla
           this.editBio.set(res.profile.bio ?? '');
           this.editBadge.set(res.profile.badge ?? 'NET_RUNNER');
         } else if (res.nickname) { 
@@ -118,18 +115,23 @@ private loadProfileByNickname(nickname: string): void {
           this.editBio.set(res.bio ?? '');
           this.editBadge.set(res.badge ?? 'NET_RUNNER');
         } else {
-          console.error("Gelen veride profil bulunamadı! Veri yapısı uyuşmuyor.");
           this.error.set("Profil verisi bulunamadı.");
         }
 
-        // 2. YÜKLEME EKRANINI KAPAT
         this.isLoading.set(false); 
       },
       error: (err: any) => {
         console.error('Profil yüklenirken HTTP Hatası oluştu:', err);
-        this.error.set("Profil verisi çekilemedi.");
         
-        // Hata durumunda da yükleme ekranını sonsuz döngüden kurtar
+        // 2. GÜVENLİK KONTROLÜ (401 Hatası): Backend oturumu sildiyse zorla çıkış yaptır
+        if (err.status === 401 || err.status === 403) {
+          alert("Oturum süreniz dolmuş. Lütfen güvenlik için tekrar giriş yapın.");
+          localStorage.clear(); 
+          window.location.href = '/login'; 
+          return; 
+        }
+
+        this.error.set("Profil verisi çekilemedi. Sunucu bağlantısını kontrol edin.");
         this.isLoading.set(false); 
       }
     });

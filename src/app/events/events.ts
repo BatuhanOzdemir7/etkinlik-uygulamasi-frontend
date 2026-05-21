@@ -64,7 +64,7 @@ export class Events implements OnInit {
   }
 
   registerToEvent(eventId: number): void {
-    this.eventService.joinEvent(eventId).subscribe({
+    this.eventService.joinEvent(eventId).subscribe({  
       next: () => { alert('Etkinliğe başarıyla kayıt oldunuz!'); this.loadEvents(); },
       error: (err) => alert('Kayıt Başarısız: ' + (err.error?.message || 'Hata oluştu.'))
     });
