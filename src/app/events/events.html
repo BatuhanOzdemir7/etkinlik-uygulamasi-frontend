@@ -1,12 +1,63 @@
 <div class="terminal-container container py-5">
-  <h2 class="neon-title text-center mb-5">
-  @if (isSearchMode()) {
-    ARAMA SONUÇLARI // "{{ searchQuery() }}"
-  } @else {
-    SİSTEM AĞI // AKTİF ETKİNLİKLER
-  }
-</h2>
+  <h2 class="neon-title text-center mb-4">
+    @if (isSearchMode()) {
+      ARAMA SONUÇLARI // "{{ searchQuery() || 'FİLTRELENDİ' }}"
+    } @else {
+      SİSTEM AĞI // AKTİF ETKİNLİKLER
+    }
+  </h2>
 
+<div class="vapor-card mb-5 p-4" style="border-radius: 8px; border: 1px solid rgba(0, 255, 0, 0.2);">
+    <div class="row g-3 align-items-end">
+      
+      <div class="col-md-3">
+        <label class="matrix-label mb-1" style="font-size: 0.8rem; letter-spacing: 1px;">// ARAMA METNİ</label>
+        <input type="text" class="form-control cyber-input" 
+               placeholder="Kelime giriniz..." 
+               [(ngModel)]="formQ" 
+               (ngModelChange)="onSearch()">
+      </div>
+      
+      <div class="col-md-3">
+        <label class="matrix-label mb-1" style="font-size: 0.8rem; letter-spacing: 1px;">// KATEGORİ</label>
+        <input type="text" class="form-control cyber-input" 
+               placeholder="Örn: Teknoloji..." 
+               [(ngModel)]="formCategory" 
+               (ngModelChange)="onSearch()">
+      </div>
+      
+      <div class="col-md-2">
+        <label class="matrix-label mb-1" style="font-size: 0.8rem; letter-spacing: 1px;">// LOKASYON</label>
+        <input type="text" class="form-control cyber-input" 
+               placeholder="Örn: Bursa..." 
+               [(ngModel)]="formLocation" 
+               (ngModelChange)="onSearch()">
+      </div>
+      
+      <div class="col-md-2">
+        <label class="matrix-label mb-1" style="font-size: 0.8rem; letter-spacing: 1px;">// SIRALAMA</label>
+        <select class="form-select cyber-select" 
+                [(ngModel)]="formSortDir" 
+                (ngModelChange)="onSearch()">
+          <option value="asc">Tarih (Yakın → Uzak)</option>
+          <option value="desc">Tarih (Uzak → Yakın)</option>
+        </select>
+      </div>
+
+      <div class="col-md-2 d-flex justify-content-center pb-2">
+        <div class="form-check form-switch d-inline-block m-0">
+          <input class="form-check-input shadow-none" type="checkbox" id="onlyFutureSwitch" 
+                 [(ngModel)]="formOnlyFuture" 
+                 (ngModelChange)="onSearch()"
+                 style="cursor: pointer;">
+          <label class="form-check-label matrix-label ms-2" for="onlyFutureSwitch" style="font-size: 0.85rem; cursor: pointer;">
+            SADECE GELECEK
+          </label>
+        </div>
+      </div>
+
+    </div>
+  </div>
   <div class="row align-items-stretch">
     @for (event of eventList(); track event.id) {
       <div class="col-md-4 mb-4">
@@ -28,6 +79,10 @@
             <div class="d-flex align-items-center mb-2">
               <span class="matrix-label me-2">Konum:</span>
               <span class="matrix-value">{{ event.location }}</span>
+            </div>
+            <div class="d-flex align-items-center mb-2">
+              <span class="matrix-label me-2">Kategori:</span>
+              <span class="matrix-value">{{ event.category }}</span>
             </div>
             <div class="d-flex align-items-center mb-3">
               <span class="matrix-label me-2">Host:</span>
@@ -51,11 +106,7 @@
     } @empty {
         <div class="col-12 text-center mt-5">
     <p class="matrix-label fs-4">
-      @if (isSearchMode()) {
-        "{{ searchQuery() }}" için sonuç bulunamadı.
-      } @else {
-        Ağda aktif etkinlik bulunamadı...
-      }
+      Ağda istenilen kriterlere uygun etkinlik bulunamadı...
     </p>
   </div>
     }

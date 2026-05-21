@@ -294,3 +294,37 @@
     box-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
   }
 }
+
+/* SİBER ARAMA ÇUBUĞU KUTULARI */
+.cyber-input, .cyber-select {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  color: #0f0 !important;
+  border: 1px solid rgba(0, 255, 0, 0.5) !important;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+/* Kutulara tıklandığında oluşacak neon parlama */
+.cyber-input:focus, .cyber-select:focus {
+  outline: none !important;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.4), inset 0 0 5px rgba(0, 255, 0, 0.2) !important;
+  border-color: #0f0 !important;
+}
+
+/* Placeholder (İçindeki silik yazılar) Rengi */
+.cyber-input::placeholder {
+  color: rgba(0, 255, 0, 0.4) !important; 
+  font-style: italic;
+}
+
+/* Açılır menünün içindeki seçeneklerin rengi */
+.cyber-select option {
+  background-color: #0a0a0a;
+  color: #0f0;
+}
+
+/* Switch (Buton) rengini temaya uydurma */
+.form-switch .form-check-input:checked {
+  background-color: #0f0;
+  border-color: #0f0;
+}

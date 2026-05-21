@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 
 export interface IPageResponse<T> {
@@ -42,6 +42,16 @@ export interface IActionResponse {
   message: string;
 }
 
+// Filtre parametreleri için arayüz
+export interface IEventSearchFilters {
+  q?: string;
+  category?: string;
+  location?: string;
+  onlyFuture?: boolean;
+  page?: number;
+  sortDir?: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class EventService {
 
@@ -81,10 +91,21 @@ export class EventService {
     );
     }
 
-searchEvents(q: string, page: number = 0, sortDir: string = 'asc'): Observable<IPageResponse<IEvent>> {
-  return this.http.get<IPageResponse<IEvent>>(
-    `${this.apiUrl}/search?q=${encodeURIComponent(q)}&page=${page}&sortDir=${sortDir}`,
-    { withCredentials: true }
-  );
-}
+searchEvents(filters: IEventSearchFilters): Observable<IPageResponse<IEvent>> {
+    let params = new HttpParams()
+      .set('page', filters.page || 0)
+      .set('sortDir', filters.sortDir || 'asc');
+
+    if (filters.q) params = params.set('q', filters.q);
+    if (filters.category) params = params.set('category', filters.category);
+    if (filters.location) params = params.set('location', filters.location);
+    if (filters.onlyFuture !== null && filters.onlyFuture !== undefined) {
+      params = params.set('onlyFuture', filters.onlyFuture);
+    }
+
+    return this.http.get<IPageResponse<IEvent>>(
+      `${this.apiUrl}/search`,
+      { params, withCredentials: true }
+    );
+  }
 }

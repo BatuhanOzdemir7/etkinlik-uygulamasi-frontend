@@ -2,7 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { EventService, IEvent } from '../services/event.service';
+import { EventService, IEvent, IEventSearchFilters } from '../services/event.service';
 
 @Component({
   selector: 'app-events',
@@ -20,47 +20,82 @@ export class Events implements OnInit {
   eventList            = signal<IEvent[]>([]);
   currentPage          = signal<number>(0);
   totalPages           = signal<number>(0);
-  searchQuery          = signal<string>('');
   isSearchMode         = signal<boolean>(false);
+  
+  // Arama durumu sinyalleri
+  searchQuery          = signal<string>('');
+  searchCategory       = signal<string>('');
+  searchLocation       = signal<string>('');
+  searchOnlyFuture     = signal<boolean>(false);
   sortDirection        = signal<'asc' | 'desc'>('asc');
+
+  // Form (Arayüz) Bağlantı Değişkenleri
+  formQ: string = '';
+  formCategory: string = '';
+  formLocation: string = '';
+  formOnlyFuture: boolean = false;
+  formSortDir: string = 'asc';
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      const q    = params['q'] ? params['q'].trim() : '';
-      const page = params['page'] ? parseInt(params['page'], 10) : 0;
+      // URL'den parametreleri okuyup sinyallere aktarıyoruz
+      const q = params['q'] ? params['q'].trim() : '';
+      const cat = params['category'] ? params['category'].trim() : '';
+      const loc = params['location'] ? params['location'].trim() : '';
+      const future = params['onlyFuture'] === 'true';
       const sort = params['sortDir'] === 'desc' ? 'desc' : 'asc';
+      const page = params['page'] ? parseInt(params['page'], 10) : 0;
 
       this.searchQuery.set(q);
-      this.currentPage.set(page);
+      this.searchCategory.set(cat);
+      this.searchLocation.set(loc);
+      this.searchOnlyFuture.set(future);
       this.sortDirection.set(sort);
-      this.isSearchMode.set(!!q);
+      this.currentPage.set(page);
 
+      // Arayüzdeki form kutularını URL ile senkronize et
+      this.formQ = q;
+      this.formCategory = cat;
+      this.formLocation = loc;
+      this.formOnlyFuture = future;
+      this.formSortDir = sort;
+
+      this.isSearchMode.set(!!q || !!cat || !!loc || future);
       this.loadEvents();
     });
   }
 
-  loadEvents(): void {
-    const query   = this.searchQuery().trim();
-    const sortDir = this.sortDirection();
-
-    if (!query) {
-      this.eventService.getEvents(this.currentPage()).subscribe({
-        next: (res) => { this.eventList.set(res.content); this.totalPages.set(res.totalPages); },
-        error: (err) => { console.error(err); this.eventList.set([]); }
-      });
-      return;
-    }
-
-    this.eventService.searchEvents(query, this.currentPage(), sortDir).subscribe({
-      next: (res) => { this.eventList.set(res.content); this.totalPages.set(res.totalPages); },
-      error: (err) => { console.error(err); this.eventList.set([]); }
+  // Arama butonuna basıldığında URL'yi günceller
+  onSearch(): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        q: this.formQ || null,
+        category: this.formCategory || null,
+        location: this.formLocation || null,
+        onlyFuture: this.formOnlyFuture ? 'true' : null,
+        sortDir: this.formSortDir,
+        page: 0 // Yeni aramada sayfayı 0'la
+      }
     });
   }
 
-  setSortDirection(direction: string): void {
-    this.sortDirection.set(direction as 'asc' | 'desc');
-    this.currentPage.set(0);
-    this.loadEvents();
+loadEvents(): void {
+    const filters: IEventSearchFilters = {
+      q: this.searchQuery(),
+      category: this.searchCategory(),
+      location: this.searchLocation(),
+      onlyFuture: this.searchOnlyFuture(),
+      sortDir: this.sortDirection(),
+      page: this.currentPage()
+    };
+
+    // İster arama modunda olalım ister olmayalım, HER ZAMAN searchEvents'i çağırıyoruz.
+    // Çünkü sıralama (sort) işlemi arka planda bu metodun içinde (backend'de) yapılıyor.
+    this.eventService.searchEvents(filters).subscribe({
+      next: (res) => { this.eventList.set(res.content); this.totalPages.set(res.totalPages); },
+      error: (err) => { console.error(err); this.eventList.set([]); }
+    });
   }
 
   registerToEvent(eventId: number): void {
@@ -72,15 +107,21 @@ export class Events implements OnInit {
 
   nextPage(): void {
     if (this.currentPage() < this.totalPages() - 1) {
-      this.currentPage.set(this.currentPage() + 1);
-      this.loadEvents();
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { page: this.currentPage() + 1 },
+        queryParamsHandling: 'merge'
+      });
     }
   }
 
   prevPage(): void {
     if (this.currentPage() > 0) {
-      this.currentPage.set(this.currentPage() - 1);
-      this.loadEvents();
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { page: this.currentPage() - 1 },
+        queryParamsHandling: 'merge'
+      });
     }
   }
 }
