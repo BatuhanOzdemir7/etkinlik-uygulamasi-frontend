@@ -82,23 +82,27 @@ export class Profile implements OnInit {
   });
 
 ngOnInit(): void {
-    const nicknameParam = this.route.snapshot.paramMap.get('nickname');
-    const myNickname = localStorage.getItem('myNickname');
+    // snapshot yerine paramMap.subscribe kullanıldı.
+    // Böylece URL her değiştiğinde bu bloğun içi otomatik olarak tekrar çalışacak.
+    this.route.paramMap.subscribe(params => {
+      const nicknameParam = params.get('nickname');
+      const myNickname = localStorage.getItem('myNickname');
 
-    // 1. GÜVENLİK KONTROLÜ: Nickname yoksa veya boşa düşmüşse yüklemeyi anında kes
-    if (!nicknameParam || nicknameParam === 'null') {
-      this.error.set('Profil bilgisi bulunamadı. Lütfen oturumunuzu kontrol edin.');
-      this.isLoading.set(false); 
-      return; 
-    }
+      // 1. GÜVENLİK KONTROLÜ: Nickname yoksa veya boşa düşmüşse yüklemeyi anında kes
+      if (!nicknameParam || nicknameParam === 'null') {
+        this.error.set('Profil bilgisi bulunamadı. Lütfen oturumunuzu kontrol edin.');
+        this.isLoading.set(false); 
+        return; 
+      }
 
-    if (nicknameParam === myNickname) {
-      this.isMe.set(true); 
-    } else {
-      this.isMe.set(false); 
-    }
-    
-    this.loadProfileByNickname(nicknameParam);
+      if (nicknameParam === myNickname) {
+        this.isMe.set(true); 
+      } else {
+        this.isMe.set(false); 
+      }
+      
+      this.loadProfileByNickname(nicknameParam);
+    });
   }
 
 private loadProfileByNickname(nickname: string): void {
