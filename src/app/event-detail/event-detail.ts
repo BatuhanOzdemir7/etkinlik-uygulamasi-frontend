@@ -23,10 +23,17 @@ export class EventDetail implements OnInit {
   error        = signal<string | null>(null);
   toast        = signal<{ message: string; type: 'success' | 'error' } | null>(null);
   
-  isRegistered = computed(() => {
+isRegistered = computed(() => {
     const userEmail = localStorage.getItem('email');
     if (!userEmail) return false;
     return this.participants().some(p => p.email === userEmail);
+  });
+
+  isOwner = computed(() => {
+    const userEmail = localStorage.getItem('email');
+    const currentEvent = this.event();
+    if (!userEmail || !currentEvent) return false;
+    return currentEvent.owner.email === userEmail;
   });
 
   participants = computed<IUser[]>(() => this.event()?.participants ?? []);

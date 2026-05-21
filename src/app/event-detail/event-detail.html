@@ -25,14 +25,16 @@
 
     <div class="vapor-card p-4 mb-4">
 
-    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
+<div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
     <h2 class="cyber-title mb-0">{{ event()!.title }}</h2>
     <div class="d-flex align-items-center gap-2">
         <span class="status-badge">{{ event()!.status }}</span>
-        <!-- Ana Detay Kartı içinde, status-badge'in yanına ekle -->
-        <a [routerLink]="['/events', event()!.id, 'edit']" class="btn cyber-btn-edit">
-        DÜZENLE
-        </a>
+        
+        @if (isOwner()) {
+          <a [routerLink]="['/events', event()!.id, 'edit']" class="btn cyber-btn-edit">
+          DÜZENLE
+          </a>
+        }
 
         @if (isRegistered()) {
         <button
@@ -52,27 +54,29 @@
     </div>
     </div>
 
-    <div class="host-panel mt-4 p-4 border border-danger mb-4">
-        <h5 class="cyber-title text-danger mb-3">>> HOST KONTROL PROTOKOLLERİ</h5>
-        <div class="d-flex gap-3 flex-wrap">
-          
-          @if (event()!.status !== 'PUBLISHED') {
-            <button class="btn host-btn-publish flex-grow-1" (click)="changeEventStatus('PUBLISHED')">
-              SİSTEMDE YAYINLA
-            </button>
-          }
-          
-          @if (event()!.status === 'PUBLISHED') {
-            <button class="btn host-btn-archive flex-grow-1" (click)="changeEventStatus('ARCHIVED')">
-              YAYINI DURDUR / ARŞİVLE
-            </button>
-          }
-          
-          <button class="btn host-btn-delete flex-grow-1" (click)="deleteEvent()">
-            KALICI OLARAK SİL
-          </button>
-        </div>
-      </div>
+@if (isOwner()) {
+        <div class="host-panel mt-4 p-4 border border-danger mb-4">
+            <h5 class="cyber-title text-danger mb-3">>> HOST KONTROL PROTOKOLLERİ</h5>
+            <div class="d-flex gap-3 flex-wrap">
+              
+              @if (event()!.status !== 'PUBLISHED') {
+                <button class="btn host-btn-publish flex-grow-1" (click)="changeEventStatus('PUBLISHED')">
+                  SİSTEMDE YAYINLA
+                </button>
+              }
+              
+              @if (event()!.status === 'PUBLISHED') {
+                <button class="btn host-btn-archive flex-grow-1" (click)="changeEventStatus('ARCHIVED')">
+                  YAYINI DURDUR / ARŞİVLE
+                </button>
+              }
+              
+              <button class="btn host-btn-delete flex-grow-1" (click)="deleteEvent()">
+                KALICI OLARAK SİL
+              </button>
+            </div>
+          </div>
+      }
       
       <p class="description mb-4">{{ event()!.description }}</p>
 
