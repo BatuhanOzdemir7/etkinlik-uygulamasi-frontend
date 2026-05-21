@@ -1,9 +1,52 @@
-/* You can add global styles to this file, and also import other style files */
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
+/* 1. EN ALT KATMAN (HTML) - Temel siyah rengi sadece buraya veriyoruz */
+html {
+  background-color: #050505 !important;
   min-height: 100vh;
-  background-color: #090a0f; /* Vaporwave temasının karanlık ucu */
-  overflow-x: hidden; /* Yanlışlıkla sağa sola kaymayı engeller */
+}
+
+/* 2. GRİD SİSTEMİ (HTML üzerine sabitliyoruz ki hiçbir div onu ezemesin) */
+html::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: 
+    linear-gradient(rgba(0, 255, 0, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 0, 0.15) 1px, transparent 1px);
+  background-size: 50px 50px;
+  z-index: -9999; /* En arkada durmasını garantiler */
+  pointer-events: none;
+animation: matrixGridMove 15s linear infinite;
+}
+
+/* ANİMASYONUN KENDİSİ (En alta ekle) */
+@keyframes matrixGridMove {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    /* 50px 50px çapraz hareket sağlar. Sadece aşağı kaysın istersen 0 50px yapabilirsin */
+    background-position: 0 500px; 
+  }
+}
+
+/* 3. ÖRTÜCÜ KATMANLARI ŞEFFAFLAŞTIRMA (Sağ ve soldaki siyahlığı yok eden kısım) */
+body, 
+app-root, 
+.vaporwave-workspace, 
+.main-wrapper, 
+main {
+  background-color: transparent !important;
+  background: transparent !important;
+  min-height: 100vh;
+}
+
+/* 4. KARTLARIN TASARIMI (Ortadaki içerik kutusu koyu ve şık kalacak) */
+.vaporwave-card, .vapor-card {
+  background-color: rgba(10, 10, 10, 0.85) !important; /* Arkasını çok hafif belli eden koyu ton */
+  border: 1px solid rgba(0, 255, 0, 0.2) !important;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.05);
 }
