@@ -1,59 +1,270 @@
-# EtkinlikUygulamasiFrontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.11.
+# Etkinlik Uygulaması (Frontend)
 
-## Development server
+Bu depo, kullanıcıların etkinlikleri keşfedebildiği, kendi etkinliklerini oluşturup yönetebildiği ve diğer katılımcılarla etkileşime geçebildiği projenin kullanıcı arayüzünü (frontend) içerir. Modern web standartlarına uygun olarak Angular 21 ve Server-Side Rendering (SSR) kullanılarak geliştirilmiştir.
 
-To start a local development server, run:
+## Temel Özellikler
 
-```bash
-ng serve
+-   **Kullanıcı Kimlik Doğrulaması:** Güvenli giriş ve kayıt işlemleri ile yetkilendirme korumaları (Auth Guards) sayesinde güvenli oturum yönetimi.
+    
+-   **Etkinlik Yönetimi:** Yeni etkinlik oluşturma, mevcut etkinlikleri düzenleme, detayları görüntüleme ve sistem içerisindeki etkinlikler arası arama yapma.
+    
+-   **İçerik Organizasyonu:** Kullanıcıların etkinliklerini yayına almadan önce taslak (My Drafts) olarak kaydedebilmesi veya eski etkinlikleri arşivleyebilmesi (My Archives).
+    
+-   **Gelişmiş Profil Sistemi:** Kullanıcıların kendi kişisel profil sayfasını yönetebilmesi ve dinamik yönlendirme ile diğer kullanıcıların profillerini görüntüleyebilmesi.
+    
+-   **Arama Motoru Optimizasyonu (SEO):** Angular Express entegrasyonu sayesinde SSR destekli hızlı ilk sayfa yüklemesi ve yüksek arama motoru görünürlüğü.
+    
+-   **Duyarlı Tasarım (Responsive):** Bootstrap 5 framework entegrasyonu ile tüm mobil cihazlarda ve masaüstü ekranlarda kusursuz çalışan arayüz.
+    
+
+## Kullanılan Teknolojiler
+
+-   **Framework:** Angular (Sürüm 21.2.0)
+    
+-   **Programlama Dili:** TypeScript (Sürüm 5.9.2)
+    
+-   **Stil ve Tasarım:** Bootstrap (Sürüm 5.3.2)
+    
+-   **Sunucu Tarafı Oluşturma (SSR):** Express ve @angular/ssr
+    
+-   **Birim Testleri (Unit Testing):** Vitest ve JSDOM
+    
+-   **Kod Biçimlendirme:** Prettier
+    
+-   **Paket Yöneticisi:** npm
+    
+
+## Rota Yapısı ve Yönlendirme
+
+Uygulama mimarisi, yetkisiz erişimleri engellemek ve kullanıcı deneyimini optimize etmek için modüler bir rota yapısı kullanır:
+
+**Genel Rotalar (Giriş Yapmamış Kullanıcılar İçin)**
+
+-   `/` - Giriş Ekranı (Login)
+    
+-   `/register` - Yeni Kullanıcı Kayıt Ekranı (Register)
+    
+
+**Korumalı Rotalar (Sadece Oturum Açmış Kullanıcılar İçin)**
+
+-   `/events` - Tüm etkinliklerin listelendiği ana akış
+    
+-   `/event/search` - Etkinlik arama ve filtreleme sayfası
+    
+-   `/events/:id` - Belirli bir etkinliğin detay sayfası
+    
+-   `/create-event` - Yeni etkinlik oluşturma arayüzü
+    
+-   `/events/:id/edit` - Mevcut bir etkinliği düzenleme arayüzü
+    
+-   `/my-drafts` - Henüz yayınlanmamış taslak etkinlikler
+    
+-   `/my-archives` - Geçmiş veya arşive alınmış etkinlikler
+    
+-   `/profile/me` - Aktif kullanıcının kişisel profil yönetim sayfası
+    
+-   `/profile/:nickname` - Belirli bir kullanıcının (kullanıcı adına göre) herkese açık profil sayfası
+    
+
+## Kurulum ve Geliştirme Ortamı
+
+Projeyi kendi bilgisayarınızda çalıştırmak için Node.js ve npm'in sisteminizde kurulu olması gerekmektedir.
+
+1.  Depoyu bilgisayarınıza klonlayın ve terminal üzerinden proje dizinine gidin.
+    
+2.  Gerekli kütüphane ve bağımlılıkları yükleyin:
+    
+
+Bash
+
+```
+npm install
+
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+3.  Geliştirme sunucusunu başlatın:
+    
 
-## Code scaffolding
+Bash
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+```
+npm start
 
-```bash
-ng generate component component-name
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Uygulama varsayılan olarak `http://localhost:4200/` adresinde çalışacaktır. Dosyalarda yaptığınız değişiklikler tarayıcıya otomatik olarak yansır (Hot Module Replacement).
 
-```bash
-ng generate --help
+## Sunucu Tarafı Oluşturma (SSR) ile Çalıştırma
+
+Projeyi üretim (production) ortamına benzer bir şekilde, SSR özellikleri aktif olarak test etmek isterseniz aşağıdaki komutları kullanabilirsiniz:
+
+1.  Projeyi dağıtım için derleyin:
+    
+
+Bash
+
+```
+npm run build
+
 ```
 
-## Building
+2.  Node.js tabanlı Express sunucusunu ayağa kaldırın:
+    
 
-To build the project run:
+Bash
 
-```bash
-ng build
+```
+npm run serve:ssr:etkinlik-uygulamasi-frontend
+
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Test ve Kod Biçimlendirme
 
-## Running unit tests
+Projenin test altyapısı, geleneksel araçlar yerine modern ve hızlı bir alternatif olan Vitest üzerine kurulmuştur.
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+-   Birim testlerini (Unit Tests) çalıştırmak için aşağıdaki komutu kullanın:
+    
 
-```bash
-ng test
+Bash
+
+```
+npm run test
+
 ```
 
-## Running end-to-end tests
+-   Proje genelinde temiz ve standart bir kod yapısı sağlamak için Prettier yapılandırılmıştır. Dosya kayıtlarında standart dışı boşluklar veya sekme kaymaları Prettier tarafından otomatik olarak düzenlenebilir.# Etkinlik Uygulaması (Frontend)
 
-For end-to-end (e2e) testing, run:
+Bu depo, kullanıcıların etkinlikleri keşfedebildiği, kendi etkinliklerini oluşturup yönetebildiği ve diğer katılımcılarla etkileşime geçebildiği projenin kullanıcı arayüzünü (frontend) içerir. Modern web standartlarına uygun olarak Angular 21 ve Server-Side Rendering (SSR) kullanılarak geliştirilmiştir.
 
-```bash
-ng e2e
+## Temel Özellikler
+
+-   **Kullanıcı Kimlik Doğrulaması:** Güvenli giriş ve kayıt işlemleri ile yetkilendirme korumaları (Auth Guards) sayesinde güvenli oturum yönetimi.
+    
+-   **Etkinlik Yönetimi:** Yeni etkinlik oluşturma, mevcut etkinlikleri düzenleme, detayları görüntüleme ve sistem içerisindeki etkinlikler arası arama yapma.
+    
+-   **İçerik Organizasyonu:** Kullanıcıların etkinliklerini yayına almadan önce taslak (My Drafts) olarak kaydedebilmesi veya eski etkinlikleri arşivleyebilmesi (My Archives).
+    
+-   **Gelişmiş Profil Sistemi:** Kullanıcıların kendi kişisel profil sayfasını yönetebilmesi ve dinamik yönlendirme ile diğer kullanıcıların profillerini görüntüleyebilmesi.
+    
+-   **Arama Motoru Optimizasyonu (SEO):** Angular Express entegrasyonu sayesinde SSR destekli hızlı ilk sayfa yüklemesi ve yüksek arama motoru görünürlüğü.
+    
+-   **Duyarlı Tasarım (Responsive):** Bootstrap 5 framework entegrasyonu ile tüm mobil cihazlarda ve masaüstü ekranlarda kusursuz çalışan arayüz.
+    
+
+## Kullanılan Teknolojiler
+
+-   **Framework:** Angular (Sürüm 21.2.0)
+    
+-   **Programlama Dili:** TypeScript (Sürüm 5.9.2)
+    
+-   **Stil ve Tasarım:** Bootstrap (Sürüm 5.3.2)
+    
+-   **Sunucu Tarafı Oluşturma (SSR):** Express ve @angular/ssr
+    
+-   **Birim Testleri (Unit Testing):** Vitest ve JSDOM
+    
+-   **Kod Biçimlendirme:** Prettier
+    
+-   **Paket Yöneticisi:** npm
+    
+
+## Rota Yapısı ve Yönlendirme
+
+Uygulama mimarisi, yetkisiz erişimleri engellemek ve kullanıcı deneyimini optimize etmek için modüler bir rota yapısı kullanır:
+
+**Genel Rotalar (Giriş Yapmamış Kullanıcılar İçin)**
+
+-   `/` - Giriş Ekranı (Login)
+    
+-   `/register` - Yeni Kullanıcı Kayıt Ekranı (Register)
+    
+
+**Korumalı Rotalar (Sadece Oturum Açmış Kullanıcılar İçin)**
+
+-   `/events` - Tüm etkinliklerin listelendiği ana akış
+    
+-   `/event/search` - Etkinlik arama ve filtreleme sayfası
+    
+-   `/events/:id` - Belirli bir etkinliğin detay sayfası
+    
+-   `/create-event` - Yeni etkinlik oluşturma arayüzü
+    
+-   `/events/:id/edit` - Mevcut bir etkinliği düzenleme arayüzü
+    
+-   `/my-drafts` - Henüz yayınlanmamış taslak etkinlikler
+    
+-   `/my-archives` - Geçmiş veya arşive alınmış etkinlikler
+    
+-   `/profile/me` - Aktif kullanıcının kişisel profil yönetim sayfası
+    
+-   `/profile/:nickname` - Belirli bir kullanıcının (kullanıcı adına göre) herkese açık profil sayfası
+    
+
+## Kurulum ve Geliştirme Ortamı
+
+Projeyi kendi bilgisayarınızda çalıştırmak için Node.js ve npm'in sisteminizde kurulu olması gerekmektedir.
+
+1.  Depoyu bilgisayarınıza klonlayın ve terminal üzerinden proje dizinine gidin.
+    
+2.  Gerekli kütüphane ve bağımlılıkları yükleyin:
+    
+
+Bash
+
+```
+npm install
+
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+3.  Geliştirme sunucusunu başlatın:
+    
 
-## Additional Resources
+Bash
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```
+npm start
+
+```
+
+Uygulama varsayılan olarak `http://localhost:4200/` adresinde çalışacaktır. Dosyalarda yaptığınız değişiklikler tarayıcıya otomatik olarak yansır (Hot Module Replacement).
+
+## Sunucu Tarafı Oluşturma (SSR) ile Çalıştırma
+
+Projeyi üretim (production) ortamına benzer bir şekilde, SSR özellikleri aktif olarak test etmek isterseniz aşağıdaki komutları kullanabilirsiniz:
+
+1.  Projeyi dağıtım için derleyin:
+    
+
+Bash
+
+```
+npm run build
+
+```
+
+2.  Node.js tabanlı Express sunucusunu ayağa kaldırın:
+    
+
+Bash
+
+```
+npm run serve:ssr:etkinlik-uygulamasi-frontend
+
+```
+
+## Test ve Kod Biçimlendirme
+
+Projenin test altyapısı, geleneksel araçlar yerine modern ve hızlı bir alternatif olan Vitest üzerine kurulmuştur.
+
+-   Birim testlerini (Unit Tests) çalıştırmak için aşağıdaki komutu kullanın:
+    
+
+Bash
+
+```
+npm run test
+
+```
+
+-   Proje genelinde temiz ve standart bir kod yapısı sağlamak için Prettier yapılandırılmıştır. Dosya kayıtlarında standart dışı boşluklar veya sekme kaymaları Prettier tarafından otomatik olarak düzenlenebilir.
